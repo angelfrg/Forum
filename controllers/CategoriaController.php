@@ -35,4 +35,5 @@ class CategoriaController extends Controller
 			'pagination' => $pagination,
 		]);
 	}
+
 }
