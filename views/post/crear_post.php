@@ -5,8 +5,8 @@
 	<div class="form-group">
 		<label for="inputTopicTitle">Título del Post</label>
 		<div class="tt-value-wrapper">
-			<input type="text" name="name" class="form-control" id="inputTopicTitle" placeholder="Tema de tu post">
-			<span class="tt-value-input">50</span>
+			<input type="text" name="name" class="form-control" id="inputTopicTitle" placeholder="Tema de tu post" maxlength="50" onkeydown="modificarValor(this.id, 'maxTema', event, 50)">
+			<span id="maxTema" class="tt-value-input">50</span>
 		</div>
 		<div class="tt-note">Describe tu post de manera breve.</div>
 	</div>
@@ -40,14 +40,15 @@
 	<div class="pt-editor">
 		<h6 class="pt-title">Cuerpo del Post</h6>
 		<div class="form-group">
-			<textarea name="message" class="form-control" rows="5" placeholder="Describe tu cuestión"></textarea>
+			<textarea name="message" class="form-control" id="textAreaPost" rows="5" maxlength="500" placeholder="Describe tu cuestión" maxlength="300" onkeydown="modificarValor(this.id, 'maxCuerpo', event, 500)"></textarea>
+            <span id="maxCuerpo" class="tt-value-input">500</span>
 		</div>
 		<div class="row">
 			<div class="col-md-4">
 				<div class="form-group">
 					<label for="inputTopicTitle">Categoría</label>
 					<select class="form-control">
-						<option value="Select">Selecciona una</option>
+						<option value="Select">Selecciona una ...</option>
 						<option value="Value 01">Value 01</option>
 						<option value="Value 02">Value 02</option>
 					</select>
@@ -56,7 +57,11 @@
 			<div class="col-md-8">
 				<div class="form-group">
 					<label for="inputTopicTags">Tags</label>
-					<input type="text" name="name" class="form-control" id="inputTopicTags" placeholder="Separa los tags con una coma">
+                    <div class="tt-value-wrapper">
+                        <input type="text" name="name" class="form-control" id="inputTopicTags" maxlength="30" placeholder="Separa los tags con una coma" onkeydown="modificarValor(this.id, 'maxTags', event, 30)">
+                        <span id="maxTags" class="tt-value-input">30</span>
+                    </div>
+
 				</div>
 			</div>
 		</div>
