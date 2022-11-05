@@ -7,6 +7,7 @@ use app\assets\AppAsset;
 use app\widgets\Alert;
 use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
+use yii\helpers\Url;
 
 AppAsset::register($this);
 $this->params['meta_description']='Forum  Estudiantes USAL';
@@ -51,6 +52,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => 'fa
 <header id="tt-header">
     <div class="container-page">
         <div class="row tt-row no-gutters">
+            <?php //TODO Crear navbar de yii ?>
             <div class="col-auto">
                 <!-- toggle mobile menu -->
                 <a class="toggle-mobile-menu" href="#">
@@ -61,16 +63,16 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => 'fa
                 <!-- /toggle mobile menu -->
                 <!-- logo -->
                 <div class="tt-logo">
-                    <a href="index.html"><img src="images/logoUSAL.png" alt=""></a>
+                    <a href="<?= Url::toRoute(['post/tendencias']);?>"><img src="images/logoUSAL.png" alt=""></a>
                 </div>
                 <!-- /logo -->
                 <!-- desktop menu -->
                 <div class="tt-desktop-menu">
                     <nav>
                         <ul>
-                            <li><a href="page-categories.html"><span>Categorías</span></a></li>
-                            <li><a href="page-tabs.html"><span>Tendencias</span></a></li>
-                            <li><a href="page-create-topic.html"><span>Crear Post</span></a></li>
+                            <li><a href="<?= Url::toRoute(['post/tendencias']);?>"><span>Tendencias</span></a></li>
+                            <li><a href="<?= Url::toRoute(['categoria/']);?>"><span>Categorías</span></a></li>
+                            <li><a href="<?= Url::toRoute(['post/crear']);?>"><span>Crear Post</span></a></li>
                         </ul>
                     </nav>
                 </div>
@@ -111,13 +113,14 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => 'fa
                     <a href="page-signup.html" class="btn btn-secondary">Registrarse</a>
                 </div>
             </div>
+
         </div>
     </div>
 </header>
 <?php //FIN HEADER ?>
 
 <main id="tt-pageContent" class="flex-shrink-0" role="main">
-    <div class="tt-custom-mobile-indent container-page">
+    <div class="tt-custom-mobile-indent container-page" style="margin-bottom: 1%">
         <?php if (!empty($this->params['breadcrumbs'])): ?>
             <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>
         <?php endif ?>

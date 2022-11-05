@@ -52,6 +52,7 @@ $config = [
         */
     ],
     'params' => $params,
+	'defaultRoute'=>'post/tendencias',	//Ruta por defecto al iniciar la web
 ];
 
 if (YII_ENV_DEV) {

@@ -34,7 +34,7 @@ $this->title = 'USAL Forum';
             <div class="tt-item">
                 <div class="tt-item-header">
                     <ul class="tt-list-badge">
-                        <li><a href="#"><span class="tt-color01 tt-badge"><?= Html::encode("{$categoria->abreviatura}")?></span></a></li>
+                        <li><a href="#"><span class="tt-badge" style="background-color: <?php echo $categoria->color_categoria;?>"><?= Html::encode("{$categoria->abreviatura}")?></span></a></li>
                     </ul>
                     <h6 class="tt-title"><a href="page-categories-single.html"><?php //Numero de posts sobre la categoria ?>Threads - 1,245</a></h6>
                 </div>
