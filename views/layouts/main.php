@@ -10,9 +10,10 @@ use yii\bootstrap5\Html;
 use yii\helpers\Url;
 
 AppAsset::register($this);
-$this->params['meta_description']='Forum  Estudiantes USAL';
+$this->params['meta_description']='Forum  Estudiantes EPSZ';
 $this->params['meta_keywords']='Forum USAL EPSZ';
 //$this->params['meta_author']='Angel Francisco Garcia';
+$this->title = 'FORUM';
 
 $this->registerCsrfMetaTags();
 $this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');

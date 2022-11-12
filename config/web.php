@@ -42,16 +42,17 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
-        'urlManager' => [
+
+        /*'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-        */
+		*/
     ],
     'params' => $params,
+	'sourceLanguage'=>'es-ES',
 	'defaultRoute'=>'post/tendencias',	//Ruta por defecto al iniciar la web
 ];
 

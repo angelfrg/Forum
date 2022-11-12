@@ -1,10 +1,12 @@
 <?php
+
+use app\models\Post;
 use yii\helpers\Html;
-use yii\widgets\LinkPager;
+use yii\helpers\Url;
+use yii\bootstrap5\LinkPager;
 
 /** @var yii\web\View $this */
 
-$this->title = 'USAL Forum';
 ?>
 <div class="site-index">
 <div class="tt-categories-title">
@@ -34,9 +36,14 @@ $this->title = 'USAL Forum';
             <div class="tt-item">
                 <div class="tt-item-header">
                     <ul class="tt-list-badge">
-                        <li><a href="#"><span class="tt-badge" style="background-color: <?php echo $categoria->color_categoria;?>"><?= Html::encode("{$categoria->abreviatura}")?></span></a></li>
+                        <li><a href="<?= Url::toRoute(['categoria/una', 'id'=>$categoria->id_categoria]);?>"><span class="tt-badge" style="background-color: <?php echo $categoria->color_categoria;?>"><?= Html::encode("{$categoria->abreviatura}")?></span></a></li>
                     </ul>
-                    <h6 class="tt-title"><a href="page-categories-single.html"><?php //Numero de posts sobre la categoria ?>Threads - 1,245</a></h6>
+                    <?php
+					$totalPosts=Post::find()
+						->where(['id_categoria'=>$categoria->id_categoria])
+						->count();
+                    ?>
+                    <h6 class="tt-title"><a href="<?= Url::toRoute(['categoria/una', 'id'=>$categoria->id_categoria]);?>"> Posts - <?= $totalPosts ?></a></h6>
                 </div>
                 <div class="tt-item-layout">
                     <div class="innerwrapper">
