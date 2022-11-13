@@ -2,6 +2,7 @@
 namespace app\controllers;
 
 use app\models\Categoria;
+use app\models\PostForm;
 use Yii;
 use yii\data\Pagination;
 use yii\web\Controller;
@@ -58,16 +59,23 @@ class PostController extends Controller
 		]);
 	}
 
-	public function actionCrear($post=null)
+	public function actionCrear()
 	{
 		$categorias=Categoria::find()->orderBy('nombre_categoria')->all();
 
-		if(isset($post)){
-			var_dump($post);
+		$model= new Post();
+
+		if ($model->load(Yii::$app->request->post())) {
+			if ($model->validate()) {
+				// form inputs are valid, do something here
+				//return $model;
+			}
+
 		}else{
 			//Se renderiza la vista de crear post
 			return $this->render('crear_post', [
 				'categorias'=>$categorias,
+				'model'=>$model,
 			]);
 		}
 	}

@@ -53,7 +53,6 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => 'fa
 <header id="tt-header">
     <div class="container-page">
         <div class="row tt-row no-gutters">
-            <?php //TODO Crear navbar de yii ?>
             <div class="col-auto">
                 <!-- toggle mobile menu -->
                 <a class="toggle-mobile-menu" href="#">
@@ -110,8 +109,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => 'fa
             </div>
             <div class="col-auto ml-auto">
                 <div class="tt-account-btn">
-                    <a href="page-login.html" class="btn btn-primary">Iniciar Sesión</a>
-                    <a href="page-signup.html" class="btn btn-secondary">Registrarse</a>
+                    <a href="<?= Url::toRoute(['site/login']);?>" class="btn btn-primary">Iniciar Sesión</a>
+                    <a href="<?= Url::toRoute(['site/registro']);?>" class="btn btn-secondary">Registrarse</a>
                 </div>
             </div>
 

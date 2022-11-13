@@ -4,8 +4,9 @@ use app\models\Categoria;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-/** @var yii\web\View $this */
-
+/* @var $this yii\web\View */
+/* @var $model app\models\Post */
+/* @var $form ActiveForm */
 ?>
 <h1 class="tt-title-border">
 	Crear Post

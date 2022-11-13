@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\Usuario;
+use app\models\UsuarioRegistroForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -89,31 +91,40 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
+	/**
+	 * Login action.
+	 *
+	 * @return Response|string
+	 */
+	public function actionRegistro()
+	{
+		$model = new UsuarioRegistroForm();
 
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
+		if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+			// form inputs are valid, do something here
+			$usuario=new Usuario();
 
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
+			$usuario->nombre_usuario=$model->nombre;
+			$usuario->apellidos_usuario=$model->apellidos;
+			$usuario->email_usuario= $model->email;
+			$usuario->password= hash("sha1", $model->password);
+			$usuario->puntos=0;
+			$usuario->id_carrera=null;
+			$usuario->id_tipo=1;
+			$usuario->token=null;
+			$usuario->url_foto=null;
+			$usuario->ult_conexion= date("Y-m-d H:i:s");
+
+			if($usuario->save()){
+				return $this->redirect(['login']);
+			}else{
+				print_r($usuario->getErrors());
+			}
+
+		} else {
+			return $this->render('registro', [
+				'model' => $model,
+			]);
+		}
+	}
 }
