@@ -2,7 +2,7 @@
 
 /** @var yii\web\View $this */
 /** @var yii\bootstrap5\ActiveForm $form */
-/** @var app\models\LoginForm $model */
+/** @var app\models\UsuarioRegistroForm $model */
 
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
@@ -19,37 +19,43 @@ use yii\helpers\Url;
                 Inicia sesión para poder usar el foro.
             </div>
         </a>
-        <form class="form-default">
+		<?php
+		$form = ActiveForm::begin(
+			[
+				'options' => [
+					'class' => 'form-default'
+				]
+			]
+		);
+		?>
             <div class="form-group">
-                <label for="loginUserName">Username</label>
-                <input type="text" name="name" class="form-control" id="loginUserName" placeholder="azyrusmax">
+				<?= $form->field($model, 'username')->textInput(['class'=>'form-control', 'id'=>'emailUsuario',
+					'placeholder'=>'Email', 'maxlength'=>'20'])->label('Email') ?>
             </div>
             <div class="form-group">
-                <label for="loginUserPassword">Password</label>
-                <input type="password" name="name" class="form-control" id="loginUserPassword" placeholder="************">
+				<?= $form->field($model, 'password')->passwordInput(['class'=>'form-control', 'id'=>'passwordUsuario',
+					'placeholder'=>'**********', 'maxlength'=>'40'])->label('Contraseña') ?>
             </div>
             <div class="row">
                 <div class="col">
                     <div class="form-group">
                         <div class="checkbox-group">
-                            <input type="checkbox" id="settingsCheckBox01" name="checkbox">
-                            <label for="settingsCheckBox01">
-                                <span class="check"></span>
-                                <span class="box"></span>
-                                <span class="tt-text">Remember me</span>
-                            </label>
+                            <?= $form->field($model, 'rememberMe')->checkbox(['id'=>'settingsCheckBox01','name'=>'checkbox',
+                                    'template'=>"{input}<label for='settingsCheckBox01'><span class='check'></span><span class='box'></span>
+                                <span class='tt-text'>Recordarme</span></label>"
+                            ]) ?>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="form-group">
-                <a href="#" class="btn btn-secondary btn-block">Log in</a>
+				<?= Html::submitButton('Iniciar sesión', ['class' => 'btn btn-secondary btn-block', 'name' => 'sign-up-button']) ?>
             </div>
             <p>¿No tienes una cuenta? <a href="<?= Url::toRoute(['site/registro']);?>" class="tt-underline">Registrate aquí</a></p>
             <div class="tt-notes">
                Al iniciar sesión, estoy de acuerdo con los
                 <a href="#" class="tt-underline">Términos de uso</a> y la <a href="#" class="tt-underline">Política de privacidad.</a>
             </div>
-        </form>
+		<?php ActiveForm::end(); ?>
     </div>
 </div>

@@ -108,12 +108,34 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => 'fa
                 <!-- /tt-search -->
             </div>
             <div class="col-auto ml-auto">
-                <div class="tt-account-btn">
-                    <a href="<?= Url::toRoute(['site/login']);?>" class="btn btn-primary">Iniciar Sesión</a>
-                    <a href="<?= Url::toRoute(['site/registro']);?>" class="btn btn-secondary">Registrarse</a>
-                </div>
-            </div>
+                <?php if(Yii::$app->user->isGuest){
+                    echo '<div class="tt-account-btn">';
+                    echo "<a href='".Url::toRoute(["site/login"])."' class='btn btn-primary'>Iniciar Sesión</a>";
+                    echo "<a href='". Url::toRoute(["site/registro"])."' class='btn btn-secondary'>Registrarse</a></div>";
+                }else{
+                    echo Html::beginForm(['/site/logout'], 'post', ['class' => 'form-inline ']).
+                        Html::submitButton('Cerrar Sesión (' . Yii::$app->user->identity->email_usuario . ')',['class' => ' btn btn-secondary']). Html::endForm();
 
+                    /*---TO-DO-----*/
+
+                    /*echo '<div class="tt-user-info d-flex justify-content-center">';
+                    echo '<div class="tt-avatar-icon tt-size-md">
+                            <i class="tt-icon"><svg><use xlink:href="#icon-ava-a"></use></svg></i>
+                            </div>';
+                    echo '<div class="custom-select-01">';
+					//echo Html::beginForm(['/site/logout'], 'post', ['class' => 'form-inline ']).
+					//	Html::dropDownList('Cerrar Sesión (' . Yii::$app->user->identity->email_usuario . ')',null). Html::endForm();
+
+					echo '<select>
+                            <option value="Default Sorting" hidden>'.Yii::$app->user->identity->nombre_usuario.'</option>
+                            <option value="value 01">Perfil</option>';
+
+	                echo '<option value="value 02">'.Html::beginForm(['/site/logout'], 'post',['class' => 'form-inline ']). Html::submitButton('Cerrar Sesión',null). Html::endForm().'</option>';
+                    echo '</select>';
+
+                    echo '</div></div>';*/
+                }?>
+            </div>
         </div>
     </div>
 </header>

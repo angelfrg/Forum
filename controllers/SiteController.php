@@ -68,11 +68,26 @@ class SiteController extends Controller
         }
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+
+        if ($model->load(Yii::$app->request->post())) {
+			if($model->login()){
+				//Yii::$app->session['veces']=0;
+				return $this->goBack();
+			}else{
+				//Yii::$app->session['veces'] = Yii::$app->session['veces'] + 1;
+			}
         }
 
-        $model->password = '';
+		if(Yii::$app->session['veces'] > 5){
+			return $this->render('error', [
+				'model' => $model,
+				'message' => "Número máximo de intentos alcanzado",
+				'name' => "Bloqueado"
+			]);
+
+		}
+
+        //$model->password = '';
 		//Yii::$app->layout='main';		//Cambiar layout main por principal
         return $this->render('login', [
             'model' => $model,
@@ -86,6 +101,7 @@ class SiteController extends Controller
      */
     public function actionLogout()
     {
+		//Yii::$app->session['veces'] =0;
         Yii::$app->user->logout();
 
         return $this->goHome();

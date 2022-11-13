@@ -29,7 +29,7 @@ use Yii;
  * @property SuscripcionCategoria[] $suscripcionCategorias
  * @property TipoUsuario $tipo
  */
-class Usuario extends \yii\db\ActiveRecord
+class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     /**
      * {@inheritdoc}
@@ -164,4 +164,38 @@ class Usuario extends \yii\db\ActiveRecord
     {
         return $this->hasOne(TipoUsuario::className(), ['id_tipo' => 'id_tipo']);
     }
+
+	public static function findIdentity($id)
+	{
+		return self::findOne($id);
+	}
+
+	public static function findIdentityByAccessToken($token, $type = null)
+	{
+		throw new \yii\base\NotSupportedException("No existe");
+	}
+
+	public function getId()
+	{
+		return $this->id_usuario;
+	}
+
+	public function getAuthKey()
+	{
+		return null;
+	}
+
+	public function validateAuthKey($authKey)
+	{
+		throw new \yii\base\NotSupportedException("No existe");
+	}
+
+
+	public static function findByEmail($email){
+		return self::find()->where(['email_usuario'=>$email])->one();
+	}
+
+	public function validatePassword($password){
+		return $this->password === hash("sha1", $password);
+	}
 }
