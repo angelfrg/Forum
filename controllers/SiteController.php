@@ -94,6 +94,22 @@ class SiteController extends Controller
         ]);
     }
 
+	/**
+	 * User menu action.
+	 *
+	 * @return Response
+	 */
+	public function actionMenu()
+	{
+		if(strcmp(Yii::$app->request->post()['myselect'],'logout')==0){
+			return $this->actionLogout();
+		}else{
+			//Ir a perfil de usuario
+			return $this->render('@app/views/usuario/perfil');
+		}
+
+	}
+
     /**
      * Logout action.
      *
@@ -108,7 +124,7 @@ class SiteController extends Controller
     }
 
 	/**
-	 * Login action.
+	 * Register action.
 	 *
 	 * @return Response|string
 	 */

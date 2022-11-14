@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Post */
+/* @var $model app\models\PostForm */
 /* @var $form ActiveForm */
 ?>
 <h1 class="tt-title-border">
@@ -16,6 +16,9 @@ use yii\helpers\Url;
         "post",
     ['class'=>'form-default form-create-topic']
     );
+
+/*<?= $form->field($model, 'titulo_post')->textInput(['id'=>'tituloPost','class'=>'form-control','placeholder'=>'Tema de tu post', 'maxlength'=>'50',
+				'onkeydown'=>"modificarValor(this.id, 'maxTema', event, 50)"])->label('Título del Post') ?>*/
 ?>
 	<div class="form-group">
         <?= Html::label("Título del Post", "tituloPost") ?>
