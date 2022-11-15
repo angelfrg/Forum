@@ -5,6 +5,7 @@ use app\models\Categoria;
 use app\models\PostForm;
 use Yii;
 use yii\data\Pagination;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use app\models\Post;
 
@@ -62,19 +63,42 @@ class PostController extends Controller
 	public function actionCrear()
 	{
 		$categorias=Categoria::find()->orderBy('nombre_categoria')->all();
+		$lista=ArrayHelper::map($categorias,'id_categoria', 'nombre_categoria');
 
-		$model= new Post();
+		$model= new PostForm();
 
 		if ($model->load(Yii::$app->request->post())) {
+
 			if ($model->validate()) {
 				// form inputs are valid, do something here
-				//return $model;
-			}
+				$post=new Post();
+				//Guardar campos de post
+				$post->id_usuario=Yii::$app->user->id;
+				$post->titulo_post=$model->titulo;
+				$post->tipo_post=$model->tipo;
+				$post->cuerpo_post=$model->cuerpo;
+				$post->id_categoria=$model->categoria;
+				$post->tags_post=$model->tags;
+				$post->fecha_post=date("Y-m-d H:i:s");
+
+
+				if($post->save()){
+					return $this->redirect(['login']);
+				}else{
+					print_r($post->getErrors());
+				}
+			}else{
+			//Se renderiza la vista de crear post
+			return $this->render('crear_post', [
+				'categorias'=>$lista,
+				'model'=>$model,
+			]);
+		}
 
 		}else{
 			//Se renderiza la vista de crear post
 			return $this->render('crear_post', [
-				'categorias'=>$categorias,
+				'categorias'=>$lista,
 				'model'=>$model,
 			]);
 		}

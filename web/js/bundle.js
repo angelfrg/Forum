@@ -1633,7 +1633,9 @@ module.exports = function (element) {
 		ttJsActiveBtn.on('click', '.tt-button-icon', function(e){
 			$(this).closest(ttJsActiveBtn).find('.tt-button-icon').removeClass('active');
 			$(this).addClass('active');
-			return false;
+            //alert( $("input",ttJsActiveBtn).length);
+            $("input",ttJsActiveBtn).val( $(this).attr("value"));
+          return false;
 		});
 	};
 })();

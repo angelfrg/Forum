@@ -113,11 +113,6 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => 'fa
                     echo "<a href='".Url::toRoute(["site/login"])."' class='btn btn-primary'>Iniciar Sesión</a>";
                     echo "<a href='". Url::toRoute(["site/registro"])."' class='btn btn-secondary'>Registrarse</a></div>";
                 }else{
-                    //echo Html::beginForm(['/site/logout'], 'post', ['class' => 'form-inline ']).
-                     //   Html::a('Cerrar Sesión (' . Yii::$app->user->identity->email_usuario . ')',"",['class' => '']). Html::endForm();
-
-                    /*---TO-DO-----*/
-
                     echo '<div class="tt-user-info d-flex justify-content-center">';
                     echo '<div class="tt-avatar-icon tt-size-md">
                             <i class="tt-icon"><svg><use xlink:href="#icon-ava-a"></use></svg></i>
