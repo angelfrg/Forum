@@ -22,19 +22,32 @@ if(empty($posts)){
 	<div class="tt-item">
 		<div class="tt-col-avatar">
 			<svg class="tt-icon">
-				<use xlink:href="#icon-ava-c"></use>
+                <?php //Obtener nombre del usuario con id del post para poner su letra
+                    $usuario=$post->getUsuario()->one();
+                    $letra=strtolower($usuario->nombre_usuario[0]);
+                ?>
+				<use xlink:href="#icon-ava-<?php echo $letra?>"></use>
 			</svg>
 		</div>
 		<div class="tt-col-description">
-			<h6 class="tt-title"><a href="page-single-topic.html">
+			<h6 class="tt-title"><a href="<?= Url::toRoute(['post/detalle','id'=>$post->id_post]);?>">
 					<?= Html::encode("{$post->titulo_post}")?>
 				</a></h6>
 			<div class="row align-items-center no-gutters">
 				<div class="col-11">
 					<ul class="tt-list-badge">
-						<li class="show-mobile"><a href="#"><span class="tt-color04 tt-badge">pets</span></a></li>
-						<li><a href="#"><span class="tt-badge">videohive</span></a></li>
-						<li><a href="#"><span class="tt-badge">photodune</span></a></li>
+                        <?php $categoria=$post->getCategoria()->one(); ?>
+						<li class="show-mobile"><a href="<?= Url::toRoute(['categoria/una', 'id'=>$categoria->id_categoria]);?>"><span class="tt-badge" style="background-color: <?php echo $categoria->color_categoria;?>"><?= Html::encode("{$categoria->abreviatura}")?></span></a></li>
+						<?php //Mostrar los tags del post separados
+                            $tags=$post->obtenerListaTags();
+                            if(isset($tags)){
+								foreach ($tags as $tag){
+                                    if($tag!=""){
+										echo '<li><a href="#"><span class="tt-badge">'.$tag.'</span></a></li>';
+                                    }
+								}
+                            }
+                        ?>
 					</ul>
 				</div>
 				<div class="col-1 ml-auto show-mobile">
@@ -42,10 +55,10 @@ if(empty($posts)){
 				</div>
 			</div>
 		</div>
-		<div class="tt-col-category"><span class="tt-badge">pets</span></div>
+		<div class="tt-col-category"><a href="<?= Url::toRoute(['categoria/una', 'id'=>$categoria->id_categoria]);?>"><span class="tt-badge" style="background-color: <?php echo $categoria->color_categoria;?>"><?= Html::encode("{$categoria->abreviatura}")?></span></a></div>
 		<div class="tt-col-value  hide-mobile">308</div>
 		<div class="tt-col-value tt-color-select  hide-mobile">660</div>
-		<div class="tt-col-value  hide-mobile">8.3k</div>
+		<div class="tt-col-value  hide-mobile"><?= Html::encode("{$post->vistas_post}")?></div>
 		<div class="tt-col-value hide-mobile">1d</div>
 	</div>
 	<?php endforeach; ?>

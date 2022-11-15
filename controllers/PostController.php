@@ -60,6 +60,15 @@ class PostController extends Controller
 		]);
 	}
 
+	public function actionDetalle($id=null)
+	{
+		$post=Post::findOne($id);
+
+		return $this->render('detalle_post', [
+			'post'=>$post,
+		]);
+	}
+
 	public function actionCrear()
 	{
 		$categorias=Categoria::find()->orderBy('nombre_categoria')->all();

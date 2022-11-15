@@ -107,4 +107,8 @@ class Post extends \yii\db\ActiveRecord
     {
         return new PostQuery(get_called_class());
     }
+
+	public function obtenerListaTags(){
+		return explode(",", $this->tags_post);
+	}
 }

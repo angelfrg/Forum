@@ -115,7 +115,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => 'fa
                 }else{
                     echo '<div class="tt-user-info d-flex justify-content-center">';
                     echo '<div class="tt-avatar-icon tt-size-md">
-                            <i class="tt-icon"><svg><use xlink:href="#icon-ava-a"></use></svg></i>
+                            <i class="tt-icon"><svg><use xlink:href="#icon-ava-'.strtolower(Yii::$app->user->identity->nombre_usuario[0]).'"></use></svg></i>
                             </div>';
                     echo '<div class="custom-select-01">';
 					echo Html::beginForm(['/site/menu'], 'post', null);

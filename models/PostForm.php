@@ -18,7 +18,7 @@ class PostForm extends Model
 			['tipo','required', 'message'=>'Debes indicar un tipo'],
 			['cuerpo','required', 'message'=>'Debes describir tu tema'],
 			['categoria','required', 'message'=>'Debes indicar una categoría'],
-
+			['tags','required', 'message'=>'Debes indicar al menos un tag'],
 		];
 	}
 }
