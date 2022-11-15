@@ -1,6 +1,7 @@
 <?php
 namespace app\views\categoria;
 use app\models\Post;
+use yii\data\Pagination;
 use yii\helpers\Html;
 use yii\widgets\LinkPager;
 use yii\helpers\Url;
@@ -66,10 +67,22 @@ use yii\helpers\Url;
 	</div>
 </div>
 <?php
-    $posts=Post::find()
-        ->where(['id_categoria'=>$categoria->id_categoria])->all();
+    //Se indica un listado de los posts de la categoría dada
+    $sql=Post::find()->where(['id_categoria'=>$categoria->id_categoria]);
 
-    $this->render('@app/views/post/listado_posts', [
+    $pagination = new Pagination([
+        'defaultPageSize' => 10,
+        'totalCount' => $sql->count(),
+    ]);
+
+    $posts = $sql->orderBy('fecha_post')
+        ->offset($pagination->offset)
+        ->limit($pagination->limit)
+        ->all();
+
+    //Se renderiza la web
+    echo $this->render('@app/views/post/listado_posts', [
+        'pagination' => $pagination,
         'posts'=>$posts,
     ]);
 ?>

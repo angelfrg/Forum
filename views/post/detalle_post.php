@@ -68,7 +68,7 @@ use yii\helpers\Url;
 	<?php //Estadisticas del post ?>
 	<div class="tt-item">
 		<div class="tt-info-box">
-			<h6 class="tt-title">Thread Status</h6>
+			<h6 class="tt-title">Estado del post</h6>
 			<div class="tt-row-icon">
 				<div class="tt-item">
 					<a href="#" class="tt-icon-btn tt-position-bottom">
@@ -99,8 +99,8 @@ use yii\helpers\Url;
 			<div class="row-object-inline form-default">
 				<h6 class="tt-title">Ordenar respuestas por:</h6>
 				<ul class="tt-list-badge tt-size-lg">
-					<li><a href="#"><span class="tt-badge">Recientes</span></a></li>
-					<li><a href="#"><span class="tt-color02 tt-badge">Con más Likes</span></a></li>
+					<li><a href="#"><span class="tt-color02 tt-badge">Recientes</span></a></li>
+					<li><a href="#"><span class="tt-badge">Con más Likes</span></a></li>
 					<li><a href="#"><span class="tt-badge">Largas</span></a></li>
 					<li><a href="#"><span class="tt-badge">Cortas</span></a></li>
 				</ul>
@@ -142,14 +142,9 @@ use yii\helpers\Url;
 					<i class="tt-icon"><svg><use xlink:href="#icon-dislike"></use></svg></i>
 					<span class="tt-text">39</span>
 				</a>
-				<a href="#" class="tt-icon-btn">
-					<i class="tt-icon"><svg><use xlink:href="#icon-favorite"></use></svg></i>
-					<span class="tt-text">12</span>
-				</a>
+
 				<div class="col-separator"></div>
-				<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
-					<i class="tt-icon"><svg><use xlink:href="#icon-reply"></use></svg></i>
-				</a>
+
 			</div>
 		</div>
 	</div>

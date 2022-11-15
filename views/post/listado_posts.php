@@ -1,7 +1,7 @@
 <?php
 use app\models\Post;
 use yii\helpers\Html;
-use yii\widgets\LinkPager;
+use yii\bootstrap5\LinkPager;
 use yii\helpers\Url;
 
 if(empty($posts)){
@@ -63,3 +63,4 @@ if(empty($posts)){
 	</div>
 	<?php endforeach; ?>
 </div>
+<?= LinkPager::widget(['pagination' => $pagination]) ?>
