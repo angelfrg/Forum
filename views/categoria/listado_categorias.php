@@ -68,6 +68,8 @@ use yii\bootstrap5\LinkPager;
         </div>
 		<?php endforeach; ?>
     </div>
-	<?= LinkPager::widget(['pagination' => $pagination]) ?>
+    <div style="margin-top: 2%">
+		<?= LinkPager::widget(['pagination' => $pagination]) ?>
+    </div>
 </div>
 </div>

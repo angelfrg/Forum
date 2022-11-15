@@ -105,7 +105,8 @@ class SiteController extends Controller
 			return $this->actionLogout();
 		}else{
 			//Ir a perfil de usuario
-			return $this->render('@app/views/usuario/perfil');
+			$usuario=Usuario::findOne(Yii::$app->user->identity->id);
+			return $this->render('@app/views/usuario/perfil',['usuario'=>$usuario]);
 		}
 
 	}

@@ -21,13 +21,15 @@ if(empty($posts)){
 	<?php foreach ($posts as $post): ?>
 	<div class="tt-item">
 		<div class="tt-col-avatar">
-			<svg class="tt-icon">
-                <?php //Obtener nombre del usuario con id del post para poner su letra
-                    $usuario=$post->getUsuario()->one();
-                    $letra=strtolower($usuario->nombre_usuario[0]);
-                ?>
-				<use xlink:href="#icon-ava-<?php echo $letra?>"></use>
-			</svg>
+            <a href="<?= Url::toRoute(['usuario/perfil', 'id'=>$post->id_usuario]);?>">
+                <svg class="tt-icon">
+                    <?php //Obtener nombre del usuario con id del post para poner su letra
+                        $usuario=$post->getUsuario()->one();
+                        $letra=strtolower($usuario->nombre_usuario[0]);
+                    ?>
+                    <use xlink:href="#icon-ava-<?php echo $letra?>"></use>
+                </svg>
+            </a>
 		</div>
 		<div class="tt-col-description">
 			<h6 class="tt-title"><a href="<?= Url::toRoute(['post/detalle','id'=>$post->id_post]);?>">
@@ -63,4 +65,6 @@ if(empty($posts)){
 	</div>
 	<?php endforeach; ?>
 </div>
-<?= LinkPager::widget(['pagination' => $pagination]) ?>
+<div style="margin-top: 2%">
+	<?= LinkPager::widget(['pagination' => $pagination]) ?>
+</div>

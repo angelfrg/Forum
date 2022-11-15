@@ -1,21 +1,27 @@
 <?php
 /* @var $this yii\web\View */
+
+use yii\helpers\Html;
+use yii\helpers\Url;
 ?>
 
 <div class="tt-user-header">
     <div class="tt-col-avatar">
         <div class="tt-icon">
             <svg class="tt-icon">
-                <use xlink:href="#icon-ava-d"></use>
+				<?php //Obtener nombre del usuario con id del post para poner su letra
+				$letra=strtolower($usuario->nombre_usuario[0]);
+				?>
+                <use xlink:href="#icon-ava-<?php echo $letra?>"></use>
             </svg>
         </div>
     </div>
     <div class="tt-col-title">
         <div class="tt-title">
-            <a href="">Dylan89</a>
+            <a href=""><?= Html::encode("{$usuario->nombre_usuario}")?></a>
         </div>
         <ul class="tt-list-badge">
-            <li><a href="#"><span class="tt-color14 tt-badge">LVL : 26</span></a></li>
+            <li><a href=""><span class="tt-color14 tt-badge">Puntos : <?= Html::encode("{$usuario->puntos}")?></span></a></li>
         </ul>
     </div>
     <div class="tt-col-btn" id="js-settings-btn">
@@ -25,8 +31,12 @@
                     <use xlink:href="#icon-settings_fill"></use>
                 </svg>
             </a>
-            <a href="#" class="btn btn-primary">Mensaje</a>
-            <a href="#" class="btn btn-secondary">Seguir</a>
+            <?php
+                if($usuario->id_usuario !== Yii::$app->user->identity->id){
+                    echo '<a href="#" class="btn btn-primary">Mensaje</a>';
+                    echo '<a href="#" class="btn btn-secondary">Seguir</a>';
+                }
+            ?>
         </div>
     </div>
 </div>
