@@ -15,10 +15,12 @@ use yii\helpers\Url;
                         $letra=strtolower($usuario->nombre_usuario[0]);
 					?>
 					<div class="tt-avatar-icon">
-						<i class="tt-icon"><svg><use xlink:href="#icon-ava-<?php echo $letra?>"></use></svg></i>
+						<i class="tt-icon">
+                            <a href="<?= Url::toRoute(['usuario/perfil', 'id'=>$post->id_usuario]);?>">
+                                <svg><use xlink:href="#icon-ava-<?php echo $letra?>"></use></svg></a></i>
 					</div>
 					<div class="tt-avatar-title">
-						<a href="#"><?= $usuario->nombre_usuario?></a>
+						<a href="<?= Url::toRoute(['usuario/perfil', 'id'=>$post->id_usuario]);?>"><?= $usuario->nombre_usuario?></a>
 					</div>
 					<a href="#" class="tt-info-time">
 						<i class="tt-icon"><svg><use xlink:href="#icon-time"></use></svg></i><?= $post->fecha_post?>
