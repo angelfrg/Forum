@@ -68,6 +68,44 @@ class CategoriaController extends Controller
 
 	}
 
+	public function actionSuscribir($id=null){
+		if(!Yii::$app->user->isGuest){
+			//Comprobar si esta suscrito
+			$comprobar=SuscripcionCategoria::find()->where(['id_usuario'=>Yii::$app->user->identity->id, 'id_categoria'=>$id])->count();
+
+			if($comprobar!==1){
+				$suscripcion=new SuscripcionCategoria();
+				$suscripcion->id_usuario=Yii::$app->user->identity->id;
+				$suscripcion->id_categoria=$id;
+
+				if($suscripcion->save())
+					return $this->redirect(Yii::$app->request->referrer);
+				else
+					return $this->redirect(Yii::$app->request->referrer);
+			}else
+				return $this->redirect(Yii::$app->request->referrer);
+		}
+	}
+
+	public function actionDesuscribir($id=null){
+		if(!Yii::$app->user->isGuest){
+			//Comprobar si esta suscrito
+			$comprobar=SuscripcionCategoria::find()->where(['id_usuario'=>Yii::$app->user->identity->id, 'id_categoria'=>$id])->count();
+
+			if($comprobar==1){
+				$suscripcion=SuscripcionCategoria::findOne(['id_usuario'=>Yii::$app->user->identity->id, 'id_categoria'=>$id]);
+
+				if($suscripcion){
+					$suscripcion->delete();
+					return $this->redirect(Yii::$app->request->referrer);
+				}else
+					return $this->redirect(Yii::$app->request->referrer);
+			}else
+				return $this->redirect(Yii::$app->request->referrer);
+		}
+	}
+
+
 	public function actionSuscripciones($id=null){
 
 		$idsCategorias=SuscripcionCategoria::find()->where(['id_usuario'=>$id]);

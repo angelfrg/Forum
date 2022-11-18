@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Post;
+use app\models\SuscripcionCategoria;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\bootstrap5\LinkPager;
@@ -60,9 +61,24 @@ use yii\bootstrap5\LinkPager;
                             <li><a href="#"><span class="tt-badge">foreign policy</span></a></li>
                         </ul>
                     </div>
-                    <a href="#" class="tt-btn-icon">
-                        <i class="tt-icon"><svg><use xlink:href="#icon-favorite"></use></svg></i>
-                    </a>
+                    <?php
+                    if(!Yii::$app->user->isGuest) {
+						$comprobar = SuscripcionCategoria::find()->where(['id_usuario' => Yii::$app->user->identity->id, 'id_categoria' => $categoria->id_categoria])->count();
+
+						if ($comprobar !== 1)
+							echo '<a href="' . Url::toRoute(['categoria/suscribir', 'id' => $categoria->id_categoria]) . '" class="tt-btn-icon">
+                                <i class="tt-icon"><svg><use xlink:href="#icon-favorite"></use></svg></i>
+                            </a>';
+						else
+							echo '<a href="' . Url::toRoute(['categoria/desuscribir', 'id' => $categoria->id_categoria]) . '" class="tt-btn-icon">
+                                <i class="tt-icon" style="fill: red"><svg><use xlink:href="#icon-favorite"></use></svg></i>
+                            </a>';
+					}
+                    else
+						echo '<a href="' . Url::toRoute(['site/login']) . '" class="tt-btn-icon">
+                                <i class="tt-icon"><svg><use xlink:href="#icon-favorite"></use></svg></i>
+                            </a>';
+                    ?>
                 </div>
             </div>
         </div>

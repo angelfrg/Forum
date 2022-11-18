@@ -30,7 +30,7 @@ class SuscripcionCategoria extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_suscripcion', 'id_usuario', 'id_categoria'], 'required'],
+            [['id_usuario', 'id_categoria'], 'required'],
             [['id_suscripcion', 'id_usuario', 'id_categoria'], 'integer'],
             [['id_suscripcion'], 'unique'],
             [['id_categoria'], 'exist', 'skipOnError' => true, 'targetClass' => Categoria::className(), 'targetAttribute' => ['id_categoria' => 'id_categoria']],
