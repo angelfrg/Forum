@@ -111,4 +111,17 @@ class Post extends \yii\db\ActiveRecord
 	public function obtenerListaTags(){
 		return explode(",", $this->tags_post);
 	}
+
+	public function incrementarVisitas($num=1){
+		$this->vistas_post=$this->vistas_post+1;
+		$this->save();
+	}
+
+	public function diasDesdePublicacion(){
+		//Si hay respuesta, poner la fecha de la ultima respuesta TODO
+
+		//Si no hay respuestas, poner fecha de post
+		$dias=date_diff(date_create(date("Y-m-d H:i:s")),date_create($this->fecha_post));
+		return $dias->d;
+	}
 }

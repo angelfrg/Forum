@@ -3,6 +3,7 @@ namespace app\controllers;
 
 use app\models\Categoria;
 use app\models\PostForm;
+use http\Url;
 use Yii;
 use yii\data\Pagination;
 use yii\helpers\ArrayHelper;
@@ -26,7 +27,7 @@ class PostController extends Controller
 			'totalCount' => $sql->count(),
 		]);
 
-		$posts = $sql->orderBy('fecha_post')
+		$posts = $sql->orderBy(['fecha_post'=>SORT_DESC])
 			->offset($pagination->offset)
 			->limit($pagination->limit)
 			->all();
@@ -48,7 +49,7 @@ class PostController extends Controller
 			'totalCount' => $sql->count(),
 		]);
 
-		$posts = $sql->orderBy('fecha_post')
+		$posts = $sql->orderBy(['fecha_post'=>SORT_DESC])
 			->offset($pagination->offset)
 			->limit($pagination->limit)
 			->all();
@@ -63,6 +64,7 @@ class PostController extends Controller
 	public function actionDetalle($id=null)
 	{
 		$post=Post::findOne($id);
+		$post->incrementarVisitas();
 
 		return $this->render('detalle_post', [
 			'post'=>$post,
@@ -71,45 +73,48 @@ class PostController extends Controller
 
 	public function actionCrear()
 	{
-		$categorias=Categoria::find()->orderBy('nombre_categoria')->all();
-		$lista=ArrayHelper::map($categorias,'id_categoria', 'nombre_categoria');
+		if(!Yii::$app->user->isGuest){
 
-		$model= new PostForm();
+			$categorias=Categoria::find()->orderBy('nombre_categoria')->all();
+			$lista=ArrayHelper::map($categorias,'id_categoria', 'nombre_categoria');
 
-		if ($model->load(Yii::$app->request->post())) {
+			$model= new PostForm();
 
-			if ($model->validate()) {
-				// form inputs are valid, do something here
-				$post=new Post();
-				//Guardar campos de post
-				$post->id_usuario=Yii::$app->user->id;
-				$post->titulo_post=$model->titulo;
-				$post->tipo_post=$model->tipo;
-				$post->cuerpo_post=$model->cuerpo;
-				$post->id_categoria=$model->categoria;
-				$post->tags_post=$model->tags;
-				$post->fecha_post=date("Y-m-d H:i:s");
+			if ($model->load(Yii::$app->request->post())) {
+
+				if ($model->validate()) {
+					// form inputs are valid, do something here
+					$post=new Post();
+					//Guardar campos de post
+					$post->id_usuario=Yii::$app->user->id;
+					$post->titulo_post=$model->titulo;
+					$post->tipo_post=$model->tipo;
+					$post->cuerpo_post=$model->cuerpo;
+					$post->id_categoria=$model->categoria;
+					$post->tags_post=$model->tags;
+					$post->fecha_post=date("Y-m-d H:i:s");
 
 
-				if($post->save()){
-					return $this->redirect(['login']);
+					if($post->save()){
+						return $this->redirect(['login']);
+					}else{
+						print_r($post->getErrors());
+					}
 				}else{
-					print_r($post->getErrors());
-				}
-			}else{
-			//Se renderiza la vista de crear post
-			return $this->render('crear_post', [
-				'categorias'=>$lista,
-				'model'=>$model,
-			]);
-		}
+				//Se renderiza la vista de crear post
+				return $this->render('crear_post', [
+					'categorias'=>$lista,
+					'model'=>$model,
+				]);
+			}
 
-		}else{
-			//Se renderiza la vista de crear post
-			return $this->render('crear_post', [
-				'categorias'=>$lista,
-				'model'=>$model,
-			]);
+			}else{
+				//Se renderiza la vista de crear post
+				return $this->render('crear_post', [
+					'categorias'=>$lista,
+					'model'=>$model,
+				]);
+			}
 		}
 	}
 }

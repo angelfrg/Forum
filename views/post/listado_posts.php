@@ -61,7 +61,7 @@ if(empty($posts)){
 		<div class="tt-col-value  hide-mobile">308</div>
 		<div class="tt-col-value tt-color-select  hide-mobile">660</div>
 		<div class="tt-col-value  hide-mobile"><?= Html::encode("{$post->vistas_post}")?></div>
-		<div class="tt-col-value hide-mobile">1d</div>
+		<div class="tt-col-value hide-mobile"><?= $post->diasDesdePublicacion() ?>d</div>
 	</div>
 	<?php endforeach; ?>
 </div>

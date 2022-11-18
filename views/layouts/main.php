@@ -72,7 +72,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => 'fa
                         <ul>
                             <li><a href="<?= Url::toRoute(['post/tendencias']);?>"><span>Tendencias</span></a></li>
                             <li><a href="<?= Url::toRoute(['categoria/']);?>"><span>Categorías</span></a></li>
-                            <li><a href="<?= Url::toRoute(['post/crear']);?>"><span>Crear Post</span></a></li>
+                            <li><a href="<?= (Yii::$app->user->isGuest) ? Url::toRoute(['site/login']):Url::toRoute(['post/crear']);?>"><span>Crear Post</span></a></li>
                         </ul>
                     </nav>
                 </div>
@@ -145,7 +145,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => 'fa
     </div>
 </main>
 
-<a href="<?= Url::toRoute(['post/crear']);?>" class="tt-btn-create-topic">
+<a href="<?= (Yii::$app->user->isGuest) ? Url::toRoute(['site/login']):Url::toRoute(['post/crear']);?>" class="tt-btn-create-topic">
     <span class="tt-icon">
         <svg>
           <use xlink:href="#icon-create_new"></use>

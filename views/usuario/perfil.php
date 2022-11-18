@@ -3,6 +3,7 @@
 
 use app\models\Post;
 use app\models\Seguidores;
+use yii\bootstrap5\Tabs;
 use yii\data\Pagination;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -53,59 +54,64 @@ use yii\helpers\Url;
     </div>
 </div>
 
+<?php //Poner contenido de cada pestaña
+
+//Se indica un listado de los posts de la categoría dada
+$sql=Post::find()->where(['id_usuario'=>$usuario->id_usuario]);
+
+$pagination = new Pagination([
+    'defaultPageSize' => 10,
+    'totalCount' => $sql->count(),
+]);
+
+$posts = $sql->orderBy('fecha_post')
+    ->offset($pagination->offset)
+    ->limit($pagination->limit)
+    ->all();
+
+$seguidores=Seguidores::find()->where(['id_seguido'=>$usuario->id_usuario])->count();
+$siguiendo=Seguidores::find()->where(['id_seguidor'=>$usuario->id_usuario])->count();
+
+?>
 <div class="tt-wrapper">
     <div class="tt-wrapper-inner">
-        <ul class="nav nav-tabs pt-tabs-default" role="tablist">
-            <li class="nav-item show">
-                <a class="nav-link" data-toggle="tab" href="#tt-tab-01" role="tab"><span>Actividad</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#tt-tab-02" role="tab"><span>Posts</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#tt-tab-03" role="tab"><span>Respuestas</span></a>
-            </li>
-            <?php
-                $seguidores=Seguidores::find()->where(['id_seguido'=>$usuario->id_usuario])->count();
-                $siguiendo=Seguidores::find()->where(['id_seguidor'=>$usuario->id_usuario])->count();
-            ?>
-            <li class="nav-item tt-hide-xs">
-                <a class="nav-link" data-toggle="tab" href="#tt-tab-04" role="tab"><span><?= Html::encode("{$seguidores}")?> Seguidores</span></a>
-            </li>
-            <li class="nav-item tt-hide-md">
-                <a class="nav-link" data-toggle="tab" href="#tt-tab-05" role="tab"><span><?= Html::encode("{$siguiendo}")?> Siguiendo</span></a>
-            </li>
-            <li class="nav-item tt-hide-md">
-                <a class="nav-link" data-toggle="tab" href="#tt-tab-06" role="tab"><span>Categorias</span></a>
-            </li>
-        </ul>
+<?php
+
+echo Tabs::widget([
+	'items' => [
+		[
+			'label' => 'Actividad',
+			'content' => $this->render("@app/views/post/listado_posts", [
+                            "pagination" => $pagination,
+                            "posts"=>$posts,
+                        ]),
+			'active' => true,
+		],
+		[
+			'label' => 'Posts',
+			'content' => '',
+		],
+		[
+			'label' => 'Respuestas',
+			'content' => '',
+		],
+		[
+			'label' => $seguidores.' Seguidores',
+			'content' => '',
+		],
+		[
+			'label' => $siguiendo.' Siguiendo',
+			'content' => '',
+		],
+		[
+			'label' => 'Categorías',
+			'content' => '',
+		],
+	],
+]);
+?>
     </div>
-    <?php //Poner contenido de cada pestaña
-
-	//Se indica un listado de los posts de la categoría dada
-	$sql=Post::find()->where(['id_usuario'=>$usuario->id_usuario]);
-
-	$pagination = new Pagination([
-		'defaultPageSize' => 10,
-		'totalCount' => $sql->count(),
-	]);
-
-	$posts = $sql->orderBy('fecha_post')
-		->offset($pagination->offset)
-		->limit($pagination->limit)
-		->all();
-
-	//Se renderiza la web
-	echo $this->render('@app/views/post/listado_posts', [
-		'pagination' => $pagination,
-		'posts'=>$posts,
-	]);
-
-    ?>
 </div>
-
-
-
 <div id="js-popup-settings" class="tt-popup-settings">
     <div class="tt-btn-col-close">
         <a href="#">
