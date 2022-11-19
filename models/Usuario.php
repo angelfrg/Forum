@@ -45,9 +45,11 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['nombre_usuario', 'apellidos_usuario', 'email_usuario', 'password'], 'required'],
+			['nombre_usuario','required', 'message'=>'Debes indicar tu nombre'],
+			['password','required', 'message'=>'Debes indicar tu contraseña'],
             [['puntos', 'id_carrera', 'id_tipo', 'token'], 'integer'],
             [['ult_conexion'], 'safe'],
+			[['email_usuario'], 'unique'],
             [['nombre_usuario'], 'string', 'max' => 20],
             [['apellidos_usuario', 'email_usuario', 'password', 'url_foto'], 'string', 'max' => 40],
             [['id_carrera'], 'exist', 'skipOnError' => true, 'targetClass' => Categoria::className(), 'targetAttribute' => ['id_carrera' => 'id_categoria']],
@@ -207,5 +209,10 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
 	public function ultimaConexion(){
 		return date_diff(date_create(date("Y-m-d H:i:s")),date_create($this->ult_conexion));
+	}
+
+	public function addPuntos($puntos=0){
+		$this->puntos+=$puntos;
+		$this->save();
 	}
 }

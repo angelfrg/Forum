@@ -180,6 +180,7 @@ use yii\helpers\Url;
 </div>
 
 <?php
+if(!Yii::$app->user->isGuest):
 $form = ActiveForm::begin(
 	[
 		'options' => [
@@ -206,4 +207,22 @@ $form = ActiveForm::begin(
         </div>
     </div>
 </div>
-<?php ActiveForm::end(); ?>
+<?php ActiveForm::end();
+    else:?>
+<div class="tt-topic-list">
+    <div class="tt-item tt-item-popup">
+        <div class="tt-col-avatar">
+            <svg class="tt-icon">
+                <use xlink:href="#icon-ava-u"></use>
+            </svg>
+        </div>
+        <div class="tt-col-message">
+            Parece que eres nuevo, regístrate con tu correo de la USAL o inicia sesión para contribuir
+        </div>
+        <div class="tt-col-btn">
+            <a href='<?= Url::toRoute(["site/login"])?>' class='btn btn-primary'>Iniciar Sesión</a>
+            <a href='<?= Url::toRoute(["site/registro"])?>' class='btn btn-secondary'>Registrarse</a>
+        </div>
+    </div>
+</div>
+<?php endif;?>

@@ -103,14 +103,15 @@ class SiteController extends Controller
 	 */
 	public function actionMenu()
 	{
-		if(strcmp(Yii::$app->request->post()['myselect'],'logout')==0){
-			return $this->actionLogout();
-		}else{
-			//Ir a perfil de usuario
-			$usuario=Usuario::findOne(Yii::$app->user->identity->id);
-			return $this->render('@app/views/usuario/perfil',['usuario'=>$usuario]);
-		}
-
+		if(Yii::$app->request->post()){
+			if(strcmp(Yii::$app->request->post()['myselect'],'logout')==0){
+				return $this->actionLogout();
+			}else{
+				//Ir a perfil de usuario
+				$this->redirect(array('usuario/perfil', 'id'=>Yii::$app->user->identity->id));
+			}
+		}else
+			$this->goHome();
 	}
 
     /**
@@ -155,7 +156,10 @@ class SiteController extends Controller
 			if($usuario->save()){
 				return $this->redirect(['login']);
 			}else{
-				print_r($usuario->getErrors());
+				$model->email=null;
+				return $this->render('registro', [
+					'model' => $model,
+				]);
 			}
 
 		} else {

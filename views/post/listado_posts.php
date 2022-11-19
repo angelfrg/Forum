@@ -18,6 +18,24 @@ if(empty($posts)){
 		<div class="tt-col-value hide-mobile">Vistas</div>
 		<div class="tt-col-value">Actividad</div>
 	</div>
+    <div class="tt-topic-list">
+        <?php if(Yii::$app->user->isGuest):?>
+        <div class="tt-item tt-item-popup">
+            <div class="tt-col-avatar">
+                <svg class="tt-icon">
+                    <use xlink:href="#icon-ava-u"></use>
+                </svg>
+            </div>
+            <div class="tt-col-message">
+                Parece que eres nuevo, regístrate con tu correo de la USAL o inicia sesión para contribuir
+            </div>
+            <div class="tt-col-btn">
+                <a href='<?= Url::toRoute(["site/login"])?>' class='btn btn-primary'>Iniciar Sesión</a>
+                <a href='<?= Url::toRoute(["site/registro"])?>' class='btn btn-secondary'>Registrarse</a>
+            </div>
+        </div>
+        <?php endif;?>
+    </div>
 	<?php foreach ($posts as $post): ?>
 	<div class="tt-item">
 		<div class="tt-col-avatar">

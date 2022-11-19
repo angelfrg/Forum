@@ -41,7 +41,7 @@ use yii\bootstrap5\LinkPager;
                     </ul>
                     <?php
 					$totalPosts=Post::find()
-						->where(['id_categoria'=>$categoria->id_categoria])
+						->where(['id_categoria'=>$categoria->id_categoria, 'id_post_raiz'=>null])
 						->count();
                     ?>
                     <h6 class="tt-title"><a href="<?= Url::toRoute(['categoria/una', 'id'=>$categoria->id_categoria]);?>"> Posts - <?= $totalPosts ?></a></h6>

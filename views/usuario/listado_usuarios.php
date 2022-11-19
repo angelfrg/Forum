@@ -1,18 +1,18 @@
 <?php
 use app\models\Usuario;
+use \app\models\Post;
 use yii\helpers\Html;
 use yii\bootstrap5\LinkPager;
 use yii\helpers\Url;
 
 if(empty($usuarios)){
-	echo '<div class="tt-followers-list"><h1>No se ha encontrado ningún seguidor</h1></div>';
+	echo '<div class="tt-followers-list"><h1>No se ha encontrado ningún usuario</h1></div>';
 	return 0;
 }
 ?>
 <div class="tt-followers-list">
 	<div class="tt-list-header">
 		<div class="tt-col-name">Usuario</div>
-
 		<div class="tt-col-value-large hide-mobile">Última actividad</div>
 		<div class="tt-col-value-large hide-mobile">Posts</div>
 		<div class="tt-col-value-large hide-mobile">Respuestas</div>
@@ -41,8 +41,8 @@ if(empty($usuarios)){
 		</div>
         <?php
             $fecha=$usuario->ultimaConexion();
-            $totalPosts=\app\models\Post::find()->where(['id_usuario'=>$usuario->id_usuario])->count();
-            $totalRespuestas=\app\models\Post::find()
+            $totalPosts=Post::find()->where(['id_usuario'=>$usuario->id_usuario, 'id_post_raiz'=>null])->count();
+            $totalRespuestas=Post::find()
                 ->where(['id_usuario'=>$usuario->id_usuario])->andWhere(['not', ['id_post_raiz'=>null]])
                 ->count();
         ?>

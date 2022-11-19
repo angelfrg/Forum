@@ -10,6 +10,8 @@ use yii\bootstrap5\Tabs;
 use yii\data\Pagination;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\Pjax;
+
 ?>
 
 <div class="tt-user-header">
@@ -28,7 +30,7 @@ use yii\helpers\Url;
             <a href="#"><?= Html::encode("{$usuario->nombre_usuario}")?></a>
         </div>
         <ul class="tt-list-badge">
-            <li><a href=""><span class="tt-color14 tt-badge">Puntos : <?= Html::encode("{$usuario->puntos}")?></span></a></li>
+            <li><span class="tt-color14 tt-badge">Puntos : <?= Html::encode("{$usuario->puntos}")?></span></li>
         </ul>
     </div>
     <div class="tt-col-btn" >
@@ -91,7 +93,7 @@ $posts = $sql->orderBy(['fecha_post'=>SORT_DESC])
     ->all();
 /*******************************************************************************/
 
-//TAB RESPUESTAS TO-DO
+//TAB RESPUESTAS
 /*******************************************************************************/
 $sqlrespuestas=Post::find()->where(['not', ['id_post_raiz'=>null]])
                         ->andWhere(['id_usuario'=>$usuario->id_usuario]);
@@ -121,6 +123,8 @@ $seguidoresTotal=Usuario::find()
     ->innerJoin('seguidores', 'seguidores.id_seguidor=usuario.id_usuario')
     ->where(['seguidores.id_seguido'=>$usuario->id_usuario])
     ->orderBy(['seguidores.fecha_seguimiento'=>SORT_DESC])
+	->offset($paginationSeguidores->offset)
+	->limit($paginationSeguidores->limit)
     ->all();
 
     //$seguidores->orderBy(['fecha_post'=>SORT_DESC])
@@ -139,6 +143,8 @@ $siguiendoTotal=Usuario::find()
 	->innerJoin('seguidores', 'seguidores.id_seguido=usuario.id_usuario')
 	->where(['seguidores.id_seguidor'=>$usuario->id_usuario])
 	->orderBy(['seguidores.fecha_seguimiento'=>SORT_DESC])
+	->offset($paginationSiguiendo->offset)
+	->limit($paginationSiguiendo->limit)
 	->all();
 
 /*******************************************************************************/
@@ -155,6 +161,8 @@ $paginationCategorias = new Pagination([
 $categorias=Categoria::find()
     ->innerJoin('suscripcion_categoria', 'suscripcion_categoria.id_categoria=categoria.id_categoria')
     ->where(['suscripcion_categoria.id_usuario'=>$usuario->id_usuario])
+	->offset($paginationCategorias->offset)
+	->limit($paginationCategorias->limit)
     ->all();
 /*******************************************************************************/
 
@@ -162,7 +170,7 @@ $categorias=Categoria::find()
 <div class="tt-wrapper">
     <div class="tt-wrapper-inner">
 <?php
-
+Pjax::begin();
 echo Tabs::widget([
 	'items' => [
 		[

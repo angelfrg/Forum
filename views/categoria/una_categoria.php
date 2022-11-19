@@ -92,7 +92,7 @@ use yii\helpers\Url;
         'totalCount' => $sql->count(),
     ]);
 
-    $posts = $sql->orderBy('fecha_post')
+    $posts = $sql->orderBy(['fecha_post'=>SORT_DESC])
         ->offset($pagination->offset)
         ->limit($pagination->limit)
         ->all();

@@ -3,6 +3,7 @@ namespace app\controllers;
 
 use app\models\Categoria;
 use app\models\PostForm;
+use app\models\Usuario;
 use http\Url;
 use Yii;
 use yii\data\Pagination;
@@ -70,9 +71,15 @@ class PostController extends Controller
 
 
 					if ($respuesta->save()) {
+						$usuario=Usuario::findOne(Yii::$app->user->id);
+						$usuario->addPuntos(20);
 						return $this->goBack();
 					} else {
-						print_r($respuesta->getErrors());
+						return $this->render('detalle_post', [
+							'post' => $post,
+							'respuestas'=>$respuestas,
+							'model'=>$model,
+						]);
 					}
 				} else
 					return $this->render('detalle_post', [
@@ -121,7 +128,10 @@ class PostController extends Controller
 
 
 					if($post->save()){
-						return $this->redirect(['login']);
+						$usuario=Usuario::findOne(Yii::$app->user->id);
+						$usuario->addPuntos(50);
+						//return $this->redirect(['login']);
+						return $this->goHome();
 					}else{
 						print_r($post->getErrors());
 					}
