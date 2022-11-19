@@ -71,14 +71,16 @@ class SiteController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
 			if($model->login()){
-				//Yii::$app->session['veces']=0;
+				$usuario=Usuario::findOne(Yii::$app->user->identity->id);
+				$usuario->updateUltimaConexion();
+				Yii::$app->session->set('veces',0);
 				return $this->goBack();
 			}else{
-				//Yii::$app->session['veces'] = Yii::$app->session['veces'] + 1;
+				Yii::$app->session->set('veces',Yii::$app->session->get('veces')+1);
 			}
         }
 
-		if(Yii::$app->session['veces'] > 5){
+		if(Yii::$app->session->get('veces') > 5){
 			return $this->render('error', [
 				'model' => $model,
 				'message' => "Número máximo de intentos alcanzado",
@@ -118,6 +120,8 @@ class SiteController extends Controller
      */
     public function actionLogout()
     {
+		$usuario=Usuario::findOne(Yii::$app->user->identity->id);
+		$usuario->updateUltimaConexion();
 		//Yii::$app->session['veces'] =0;
         Yii::$app->user->logout();
 

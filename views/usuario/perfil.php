@@ -3,6 +3,9 @@
 
 use app\models\Post;
 use app\models\Seguidores;
+use app\models\Usuario;
+use \app\models\SuscripcionCategoria;
+use app\models\Categoria;
 use yii\bootstrap5\Tabs;
 use yii\data\Pagination;
 use yii\helpers\Html;
@@ -56,21 +59,81 @@ use yii\helpers\Url;
 
 <?php //Poner contenido de cada pestaña
 
+//TAB Actividad
+/*******************************************************************************/
+
+/*******************************************************************************/
+
+//TAB POSTS
+/*******************************************************************************/
 //Se indica un listado de los posts de la categoría dada
 $sql=Post::find()->where(['id_usuario'=>$usuario->id_usuario]);
 
 $pagination = new Pagination([
-    'defaultPageSize' => 10,
+    'defaultPageSize' => 5,
     'totalCount' => $sql->count(),
 ]);
 
-$posts = $sql->orderBy('fecha_post')
+$posts = $sql->orderBy(['fecha_post'=>SORT_DESC])
     ->offset($pagination->offset)
     ->limit($pagination->limit)
     ->all();
+/*******************************************************************************/
 
-$seguidores=Seguidores::find()->where(['id_seguido'=>$usuario->id_usuario])->count();
-$siguiendo=Seguidores::find()->where(['id_seguidor'=>$usuario->id_usuario])->count();
+//TAB RESPUESTAS TO-DO
+/*******************************************************************************/
+
+/*******************************************************************************/
+
+//TAB Seguidores
+/*******************************************************************************/
+$seguidores=Seguidores::find()->where(['id_seguido'=>$usuario->id_usuario]);
+
+$paginationSeguidores = new Pagination([
+	'defaultPageSize' => 5,
+	'totalCount' => $seguidores->count(),
+]);
+
+$seguidoresTotal=Usuario::find()
+    ->innerJoin('seguidores', 'seguidores.id_seguidor=usuario.id_usuario')
+    ->where(['seguidores.id_seguido'=>$usuario->id_usuario])
+    ->orderBy(['seguidores.fecha_seguimiento'=>SORT_DESC])
+    ->all();
+
+    //$seguidores->orderBy(['fecha_post'=>SORT_DESC])
+/*******************************************************************************/
+
+//TAB Siguiendo
+/*******************************************************************************/
+$siguiendo=Seguidores::find()->where(['id_seguidor'=>$usuario->id_usuario]);
+
+$paginationSiguiendo = new Pagination([
+	'defaultPageSize' => 5,
+	'totalCount' => $siguiendo->count(),
+]);
+
+$siguiendoTotal=Usuario::find()
+	->innerJoin('seguidores', 'seguidores.id_seguido=usuario.id_usuario')
+	->where(['seguidores.id_seguidor'=>$usuario->id_usuario])
+	->orderBy(['seguidores.fecha_seguimiento'=>SORT_DESC])
+	->all();
+
+/*******************************************************************************/
+
+//TAB Categorias
+/*******************************************************************************/
+$suscripcionCategorias=SuscripcionCategoria::find()->where(['id_usuario'=>$usuario->id_usuario]);
+
+$paginationCategorias = new Pagination([
+	'defaultPageSize' => 3,
+	'totalCount' => $suscripcionCategorias->count(),
+]);
+
+$categorias=Categoria::find()
+    ->innerJoin('suscripcion_categoria', 'suscripcion_categoria.id_categoria=categoria.id_categoria')
+    ->where(['suscripcion_categoria.id_usuario'=>$usuario->id_usuario])
+    ->all();
+/*******************************************************************************/
 
 ?>
 <div class="tt-wrapper">
@@ -89,23 +152,37 @@ echo Tabs::widget([
 		],
 		[
 			'label' => 'Posts',
-			'content' => '',
+			'content' => $this->render("@app/views/post/listado_posts", [
+				"pagination" => $pagination,
+				"posts"=>$posts,
+			]),
 		],
 		[
 			'label' => 'Respuestas',
 			'content' => '',
 		],
 		[
-			'label' => $seguidores.' Seguidores',
-			'content' => '',
+			'label' => $seguidores->count().' Seguidores',
+			'content' => $this->render("@app/views/usuario/listado_usuarios", [
+				"pagination" => $paginationSeguidores,
+				"usuarios"=>$seguidoresTotal,
+                "id_perfil"=>$usuario->id_usuario,
+			]),
 		],
 		[
-			'label' => $siguiendo.' Siguiendo',
-			'content' => '',
+			'label' => $siguiendo->count().' Siguiendo',
+			'content' => $this->render("@app/views/usuario/listado_usuarios", [
+				"pagination" => $paginationSiguiendo,
+				"usuarios"=>$siguiendoTotal,
+				"id_perfil"=>$usuario->id_usuario,
+			]),
 		],
 		[
 			'label' => 'Categorías',
-			'content' => '',
+			'content' => '<div style="margin-top: 2%">'.$this->render('@app/views/categoria/listado_categorias', [
+			'categorias'=>$categorias,
+			'pagination' => $paginationCategorias,
+		    ]).'</div>',
 		],
 	],
 ]);

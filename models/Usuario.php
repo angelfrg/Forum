@@ -198,4 +198,14 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 	public function validatePassword($password){
 		return $this->password === hash("sha1", $password);
 	}
+
+	//Se actualiza la ultima conexion al foro del usuario en sesión
+	public function updateUltimaConexion(){
+		$this->ult_conexion=date("Y-m-d H:i:s");
+		$this->save();
+	}
+
+	public function ultimaConexion(){
+		return date_diff(date_create(date("Y-m-d H:i:s")),date_create($this->ult_conexion));
+	}
 }
