@@ -17,32 +17,10 @@ class PostController extends Controller
 	 *
 	 * @return string
 	 */
-	public function actionIndex()
-	{
-		//Obtener todas las categorias de la base de datos y mandarlas como parametro
-		$sql=Post::find();
-
-		$pagination = new Pagination([
-			'defaultPageSize' => 10,
-			'totalCount' => $sql->count(),
-		]);
-
-		$posts = $sql->orderBy(['fecha_post'=>SORT_DESC])
-			->offset($pagination->offset)
-			->limit($pagination->limit)
-			->all();
-
-		//Se renderiza la web
-		return $this->render('listado_posts', [
-			'pagination' => $pagination,
-			'posts'=>$posts,
-		]);
-	}
-
 	public function actionTendencias()
 	{
 		//Obtener todas las categorias de la base de datos y mandarlas como parametro
-		$sql=Post::find();
+		$sql=Post::find()->where(['id_post_raiz'=>null]);
 
 		$pagination = new Pagination([
 			'defaultPageSize' => 10,
@@ -64,11 +42,58 @@ class PostController extends Controller
 	public function actionDetalle($id=null)
 	{
 		$post=Post::findOne($id);
-		$post->incrementarVisitas();
+		//Modelo para crear respuestas
+		$model= new PostForm();
+		$respuestas=Post::find()->where(['id_post_raiz'=>$post->id_post])->all();
 
-		return $this->render('detalle_post', [
-			'post'=>$post,
-		]);
+		if(!Yii::$app->user->isGuest){
+			$post->incrementarVisitas();
+
+			if ($model->load(Yii::$app->request->post())) {
+				$model->categoria=$post->id_categoria;
+				$model->tags=$post->tags_post;
+				$model->titulo=$post->titulo_post;
+				$model->tipo='RESPUESTA';
+
+				if ($model->validate()) {
+
+					$respuesta = new Post();
+					//Guardar campos de la respuesta
+					$respuesta->id_post_raiz=$post->id_post;
+					$respuesta->id_usuario = Yii::$app->user->id;
+					$respuesta->titulo_post = $model->titulo;
+					$respuesta->tipo_post = $model->tipo;
+					$respuesta->cuerpo_post = $model->cuerpo;
+					$respuesta->id_categoria = $model->categoria;
+					$respuesta->tags_post = $model->tags;
+					$respuesta->fecha_post = date("Y-m-d H:i:s");
+
+
+					if ($respuesta->save()) {
+						return $this->goBack();
+					} else {
+						print_r($respuesta->getErrors());
+					}
+				} else
+					return $this->render('detalle_post', [
+						'post' => $post,
+						'respuestas'=>$respuestas,
+						'model'=>$model,
+					]);
+			}else{
+				return $this->render('detalle_post', [
+					'post' => $post,
+					'respuestas'=>$respuestas,
+					'model'=>$model,
+				]);
+			}
+		}else
+			return $this->render('detalle_post', [
+				'post' => $post,
+				'respuestas'=>$respuestas,
+				'model'=>$model,
+			]);
+
 	}
 
 	public function actionCrear()

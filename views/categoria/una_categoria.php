@@ -85,7 +85,7 @@ use yii\helpers\Url;
 </div>
 <?php
     //Se indica un listado de los posts de la categoría dada
-    $sql=Post::find()->where(['id_categoria'=>$categoria->id_categoria]);
+    $sql=Post::find()->where(['id_categoria'=>$categoria->id_categoria, 'id_post_raiz'=>null]);
 
     $pagination = new Pagination([
         'defaultPageSize' => 10,

@@ -61,13 +61,24 @@ use yii\helpers\Url;
 
 //TAB Actividad
 /*******************************************************************************/
+//Se indica un listado de los posts
+$actividad=Post::find()->where(['id_usuario'=>$usuario->id_usuario]);
 
+$paginationActividad = new Pagination([
+	'defaultPageSize' => 5,
+	'totalCount' => $actividad->count(),
+]);
+
+$postsActividad = $actividad->orderBy(['fecha_post'=>SORT_DESC])
+	->offset($paginationActividad->offset)
+	->limit($paginationActividad->limit)
+	->all();
 /*******************************************************************************/
 
 //TAB POSTS
 /*******************************************************************************/
-//Se indica un listado de los posts de la categoría dada
-$sql=Post::find()->where(['id_usuario'=>$usuario->id_usuario]);
+//Se indica un listado de los post
+$sql=Post::find()->where(['id_usuario'=>$usuario->id_usuario, 'id_post_raiz'=>null]);
 
 $pagination = new Pagination([
     'defaultPageSize' => 5,
@@ -82,6 +93,18 @@ $posts = $sql->orderBy(['fecha_post'=>SORT_DESC])
 
 //TAB RESPUESTAS TO-DO
 /*******************************************************************************/
+$sqlrespuestas=Post::find()->where(['not', ['id_post_raiz'=>null]])
+                        ->andWhere(['id_usuario'=>$usuario->id_usuario]);
+
+$paginationRespuestas = new Pagination([
+	'defaultPageSize' => 5,
+	'totalCount' => $sqlrespuestas->count(),
+]);
+
+$respuestas = $sqlrespuestas->orderBy(['fecha_post'=>SORT_DESC])
+	->offset($paginationRespuestas->offset)
+	->limit($paginationRespuestas->limit)
+	->all();
 
 /*******************************************************************************/
 
@@ -145,8 +168,8 @@ echo Tabs::widget([
 		[
 			'label' => 'Actividad',
 			'content' => $this->render("@app/views/post/listado_posts", [
-                            "pagination" => $pagination,
-                            "posts"=>$posts,
+                            "pagination" => $paginationActividad,
+                            "posts"=>$postsActividad,
                         ]),
 			'active' => true,
 		],
@@ -159,7 +182,10 @@ echo Tabs::widget([
 		],
 		[
 			'label' => 'Respuestas',
-			'content' => '',
+			'content' => $this->render("@app/views/post/listado_respuestas", [
+				"pagination" => $paginationRespuestas,
+				"respuestas"=>$respuestas,
+			]),
 		],
 		[
 			'label' => $seguidores->count().' Seguidores',

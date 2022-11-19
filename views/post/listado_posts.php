@@ -53,13 +53,16 @@ if(empty($posts)){
 					</ul>
 				</div>
 				<div class="col-1 ml-auto show-mobile">
-					<div class="tt-value">1d</div>
+					<div class="tt-value"><?= $post->diasDesdePublicacion() ?>d</div>
 				</div>
 			</div>
 		</div>
+        <?php
+		    $totalRespuestas=Post::find()->where(['id_post_raiz'=>$post->id_post])->count();
+        ?>
 		<div class="tt-col-category"><a href="<?= Url::toRoute(['categoria/una', 'id'=>$categoria->id_categoria]);?>"><span class="tt-badge" style="background-color: <?php echo $categoria->color_categoria;?>"><?= Html::encode("{$categoria->abreviatura}")?></span></a></div>
 		<div class="tt-col-value  hide-mobile">308</div>
-		<div class="tt-col-value tt-color-select  hide-mobile">660</div>
+		<div class="tt-col-value tt-color-select  hide-mobile"><?= $totalRespuestas?></div>
 		<div class="tt-col-value  hide-mobile"><?= Html::encode("{$post->vistas_post}")?></div>
 		<div class="tt-col-value hide-mobile"><?= $post->diasDesdePublicacion() ?>d</div>
 	</div>

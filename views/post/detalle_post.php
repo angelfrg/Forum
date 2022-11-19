@@ -1,6 +1,8 @@
 <?php
+use app\models\Usuario;
 use app\models\Post;
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 use yii\widgets\LinkPager;
 use yii\helpers\Url;
 ?>
@@ -23,7 +25,7 @@ use yii\helpers\Url;
 						<a href="<?= Url::toRoute(['usuario/perfil', 'id'=>$post->id_usuario]);?>"><?= $usuario->nombre_usuario?></a>
 					</div>
 					<a href="#" class="tt-info-time">
-						<i class="tt-icon"><svg><use xlink:href="#icon-time"></use></svg></i><?= $post->fecha_post?>
+						<i class="tt-icon"><svg><use xlink:href="#icon-time"></use></svg></i><?= date_create($post->fecha_post)->format("d/m/Y")?>
 					</a>
 				</div>
 				<h3 class="tt-item-title">
@@ -61,13 +63,19 @@ use yii\helpers\Url;
 					<span class="tt-text">39</span>
 				</a>
 				<div class="col-separator"></div>
-				<a href="#" class="tt-icon-btn tt-hover-02 tt-small-indent">
+				<a href="#responder" class="tt-icon-btn tt-hover-02 tt-small-indent">
 					<i class="tt-icon"><svg><use xlink:href="#icon-reply"></use></svg></i>
 				</a>
 			</div>
 		</div>
 	</div>
-	<?php //Estadisticas del post ?>
+	<?php //Estadisticas del post
+        $usuariosTotal=Post::find()
+                                ->select(['id_usuario'])
+                                ->where(['id_post'=>$post->id_post])
+                                ->orWhere(['id_post_raiz'=>$post->id_post])
+                                ->distinct()->count();
+    ?>
 	<div class="tt-item">
 		<div class="tt-info-box">
 			<h6 class="tt-title">Estado del post</h6>
@@ -75,19 +83,19 @@ use yii\helpers\Url;
 				<div class="tt-item">
 					<a href="#" class="tt-icon-btn tt-position-bottom">
 						<i class="tt-icon"><svg><use xlink:href="#icon-reply"></use></svg></i>
-						<span class="tt-text">283</span>
+						<span class="tt-text"><?=Html::encode(count($respuestas));?></span>
 					</a>
 				</div>
 				<div class="tt-item">
 					<a href="#" class="tt-icon-btn tt-position-bottom">
 						<i class="tt-icon"><svg><use xlink:href="#icon-view"></use></svg></i>
-						<span class="tt-text">10.5k</span>
+						<span class="tt-text"><?= Html::encode($post->vistas_post);?></span>
 					</a>
 				</div>
 				<div class="tt-item">
 					<a href="#" class="tt-icon-btn tt-position-bottom">
 						<i class="tt-icon"><svg><use xlink:href="#icon-user"></use></svg></i>
-						<span class="tt-text">168</span>
+						<span class="tt-text"><?= Html::encode($usuariosTotal);?></span>
 					</a>
 				</div>
 				<div class="tt-item">
@@ -115,26 +123,39 @@ use yii\helpers\Url;
 			</div>
 		</div>
 	</div>
-    <?php //Una respuesta ?>
+
+    <?php //Una respuesta
+        if(!empty($respuestas)):
+            foreach ($respuestas as $respuesta):
+                $usuario=Usuario::find()->where(['id_usuario'=>$respuesta->id_usuario])->one();
+    ?>
 	<div class="tt-item">
 		<div class="tt-single-topic">
 			<div class="tt-item-header pt-noborder">
 				<div class="tt-item-info info-top">
 					<div class="tt-avatar-icon">
-						<i class="tt-icon"><svg><use xlink:href="#icon-ava-t"></use></svg></i>
+						<i class="tt-icon">
+                            <a href="<?= Url::toRoute(['usuario/perfil', 'id'=>$usuario->id_usuario]);?>">
+                                <svg class="tt-icon">
+									<?php //Obtener nombre del usuario con id del post para poner su letra
+									$letra=strtolower($usuario->nombre_usuario[0]);
+									?>
+                                    <use xlink:href="#icon-ava-<?php echo $letra?>"></use>
+                                </svg>
+                            </a>
+                        </i>
 					</div>
 					<div class="tt-avatar-title">
-						<a href="#">tesla02</a>
+						<a href="<?= Url::toRoute(['usuario/perfil', 'id'=>$usuario->id_usuario]);?>"><?= Html::encode("{$usuario->nombre_usuario}")?></a>
 					</div>
 					<a href="#" class="tt-info-time">
-						<i class="tt-icon"><svg><use xlink:href="#icon-time"></use></svg></i>6 Jan,2019
+						<i class="tt-icon"><svg><use xlink:href="#icon-time"></use></svg></i><?= date_create($respuesta->fecha_post)->format("d/m/Y")?>
 					</a>
 				</div>
 			</div>
 			<div class="tt-item-description">
-				Finally!<br>
-				Are there any special recommendations for design or an updated guide that includes new preview sizes, including retina displays?
-			</div>
+				<?= Html::encode("{$respuesta->cuerpo_post}")?>
+            </div>
 			<div class="tt-item-info info-bottom">
 				<a href="#" class="tt-icon-btn">
 					<i class="tt-icon"><svg><use xlink:href="#icon-like"></use></svg></i>
@@ -150,23 +171,39 @@ use yii\helpers\Url;
 			</div>
 		</div>
 	</div>
+    <?php endforeach; ?>
+    <div class="tt-wrapper-inner">
+        <h4 class="tt-title-separator"><span>Has llegado al final de las respuestas</span></h4>
+    </div>
+    <?php endif;?>
+
 </div>
 
-<div class="tt-wrapper-inner">
-    <h4 class="tt-title-separator"><span>Has llegado al final de las respuestas</span></h4>
-</div>
-
-<?php //Respuesta ?>
-<div class="tt-wrapper-inner">
+<?php
+$form = ActiveForm::begin(
+	[
+		'options' => [
+			'class' => 'form-default'
+		]
+	]
+);
+?>
+<div class="tt-wrapper-inner" id="responder">
     <div class="pt-editor form-default">
         <h6 class="pt-title">Pon tu respuesta</h6>
         <div class="form-group">
-            <textarea name="message" class="form-control" rows="5" placeholder="Escribe tu respuesta..."></textarea>
+			<?=
+			$form->field($model, 'cuerpo')->textarea(['class'=>'form-control', 'id'=>'cuerpoPost',
+				'rows'=>'5', 'maxlength'=>'500', 'placeholder'=>'Escribe tu respuesta...',
+				'onkeydown'=>"modificarValor(this.id, 'maxCuerpo', event, 500)"])->label(false)
+			?>
+            <span id="maxCuerpo" class="tt-value-input">500</span>
         </div>
         <div class="pt-row">
             <div class="col-auto">
-                <a href="#" class="btn btn-secondary btn-width-lg">Enviar</a>
+				<?= Html::submitButton('Enviar', ['class' => 'btn btn-secondary btn-width-lg', 'name' => 'crearPost']) ?>
             </div>
         </div>
     </div>
 </div>
+<?php ActiveForm::end(); ?>

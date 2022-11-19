@@ -13,12 +13,6 @@ use yii\widgets\ActiveForm;
 	Crear Post
 </h1>
 <?php
-/*Html::beginForm(
-        Url::toRoute("post/crear"),
-        "post",
-    ['class'=>'form-default form-create-topic']
-    );*/
-
 $form = ActiveForm::begin(
 	[
 		'options' => [
