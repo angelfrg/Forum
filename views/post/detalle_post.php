@@ -1,4 +1,6 @@
 <?php
+
+use app\models\Accion;
 use app\models\Usuario;
 use app\models\Post;
 use yii\helpers\Html;
@@ -53,15 +55,41 @@ use yii\helpers\Url;
 			<div class="tt-item-description">
 				<p><?= Html::encode("{$post->cuerpo_post}")?></p>
 			</div>
+			<?php
+			$likesPost=Accion::find()->where(['id_post'=>$post->id_post, 'like'=>1])->count();
+			$dislikesPost=Accion::find()->where(['id_post'=>$post->id_post, 'dislike'=>1])->count();
+			?>
 			<div class="tt-item-info info-bottom">
-				<a href="#" class="tt-icon-btn">
-					<i class="tt-icon"><svg><use xlink:href="#icon-like"></use></svg></i>
-					<span class="tt-text">671</span>
-				</a>
-				<a href="#" class="tt-icon-btn">
-					<i class="tt-icon"><svg><use xlink:href="#icon-dislike"></use></svg></i>
-					<span class="tt-text">39</span>
-				</a>
+                <?php
+                    if(!Yii::$app->user->isGuest){
+
+                        //Ver si el usuario activo ha dado like o dislike al post
+                        $accionUsuario=Accion::findOne(['id_post'=>$post->id_post, 'id_usuario'=>Yii::$app->user->id]);
+
+                        echo '<a href="' .Url::toRoute(['post/like', 'id' => $post->id_post]).'" class="tt-icon-btn">
+                            <i class="tt-icon">';
+                        if(!empty($accionUsuario) && $accionUsuario->like==1) echo '<svg style="fill: #0a58ca">'; else echo '<svg>';
+                        echo '<use xlink:href="#icon-like"></use></svg></i>
+                        <span class="tt-text">'.Html::encode("{$likesPost}") .'</span>
+                        </a>';
+
+                        echo '<a href="'.Url::toRoute(['post/dislike', 'id' => $post->id_post]).'" class="tt-icon-btn">
+                            <i class="tt-icon">';
+						if(!empty($accionUsuario) && $accionUsuario->dislike==1) echo '<svg style="fill: #0a58ca">'; else echo '<svg>';
+                        echo '<use xlink:href="#icon-dislike"></use></svg></i>
+                        <span class="tt-text">'. Html::encode("{$dislikesPost}").'</span>
+                        </a>';
+                    }else{
+						echo '<a href="#" class="tt-icon-btn">
+                            <i class="tt-icon"><svg><use xlink:href="#icon-like"></use></svg></i>
+                        <span class="tt-text">'.Html::encode("{$likesPost}") .'</span>
+                        </a>';
+						echo '<a href="#" class="tt-icon-btn">
+                            <i class="tt-icon"><svg><use xlink:href="#icon-dislike"></use></svg></i>
+                        <span class="tt-text">'. Html::encode("{$dislikesPost}").'</span>
+                        </a>';
+                    }
+                ?>
 				<div class="col-separator"></div>
 				<a href="#responder" class="tt-icon-btn tt-hover-02 tt-small-indent">
 					<i class="tt-icon"><svg><use xlink:href="#icon-reply"></use></svg></i>
@@ -101,7 +129,7 @@ use yii\helpers\Url;
 				<div class="tt-item">
 					<a href="#" class="tt-icon-btn tt-position-bottom">
 						<i class="tt-icon"><svg><use xlink:href="#icon-like"></use></svg></i>
-						<span class="tt-text">2.4k</span>
+						<span class="tt-text"><?= Html::encode("{$likesPost}") ?></span>
 					</a>
 				</div>
 			</div>
@@ -157,14 +185,39 @@ use yii\helpers\Url;
 				<?= Html::encode("{$respuesta->cuerpo_post}")?>
             </div>
 			<div class="tt-item-info info-bottom">
-				<a href="#" class="tt-icon-btn">
-					<i class="tt-icon"><svg><use xlink:href="#icon-like"></use></svg></i>
-					<span class="tt-text">671</span>
-				</a>
-				<a href="#" class="tt-icon-btn">
-					<i class="tt-icon"><svg><use xlink:href="#icon-dislike"></use></svg></i>
-					<span class="tt-text">39</span>
-				</a>
+				<?php
+				$likesRespuesta=Accion::find()->where(['id_post'=>$respuesta->id_post, 'like'=>1])->count();
+				$dislikesRespuesta=Accion::find()->where(['id_post'=>$respuesta->id_post, 'dislike'=>1])->count();
+
+				if(!Yii::$app->user->isGuest){
+
+					//Ver si el usuario activo ha dado like o dislike al post
+					$accionUsuarioResp=Accion::findOne(['id_post'=>$respuesta->id_post, 'id_usuario'=>Yii::$app->user->id]);
+
+					echo '<a href="' .Url::toRoute(['post/like', 'id' => $respuesta->id_post]).'" class="tt-icon-btn">
+                            <i class="tt-icon">';
+					if(!empty($accionUsuarioResp) && $accionUsuarioResp->like==1) echo '<svg style="fill: #0a58ca">'; else echo '<svg>';
+					echo '<use xlink:href="#icon-like"></use></svg></i>
+                        <span class="tt-text">'.Html::encode("{$likesRespuesta}") .'</span>
+                        </a>';
+
+					echo '<a href="'.Url::toRoute(['post/dislike', 'id' => $respuesta->id_post]).'" class="tt-icon-btn">
+                            <i class="tt-icon">';
+					if(!empty($accionUsuarioResp) && $accionUsuarioResp->dislike==1) echo '<svg style="fill: #0a58ca">'; else echo '<svg>';
+					echo '<use xlink:href="#icon-dislike"></use></svg></i>
+                        <span class="tt-text">'. Html::encode("{$dislikesRespuesta}").'</span>
+                        </a>';
+				}else{
+					echo '<a href="#" class="tt-icon-btn">
+                            <i class="tt-icon"><svg><use xlink:href="#icon-like"></use></svg></i>
+                        <span class="tt-text">'.Html::encode("{$likesRespuesta}") .'</span>
+                        </a>';
+					echo '<a href="#" class="tt-icon-btn">
+                            <i class="tt-icon"><svg><use xlink:href="#icon-dislike"></use></svg></i>
+                        <span class="tt-text">'. Html::encode("{$dislikesRespuesta}").'</span>
+                        </a>';
+				}
+				?>
 
 				<div class="col-separator"></div>
 

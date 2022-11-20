@@ -1,6 +1,7 @@
 <?php
 namespace app\controllers;
 
+use app\models\Accion;
 use app\models\Categoria;
 use app\models\PostForm;
 use app\models\Usuario;
@@ -149,6 +150,68 @@ class PostController extends Controller
 					'categorias'=>$lista,
 					'model'=>$model,
 				]);
+			}
+		}
+	}
+
+	public function actionLike($id=null){
+		if(!Yii::$app->user->isGuest){
+			//Comprobar si tiene like del usuario en sesión
+			$comprobar=Accion::find()->where(['id_usuario'=>Yii::$app->user->identity->id, 'id_post'=>$id])->count();
+
+			//Si no hay una acción para este post, se crea
+			if($comprobar !=1){
+				$nuevaAccion=new Accion();
+				$nuevaAccion->id_post=$id;
+				$nuevaAccion->id_usuario=Yii::$app->user->identity->id;
+				$nuevaAccion->like=1;
+				$nuevaAccion->dislike=0;
+
+				if($nuevaAccion->save())
+					return $this->redirect(Yii::$app->request->referrer);
+				else
+					return $this->redirect(Yii::$app->request->referrer);
+			}
+			else{
+				//Si ya existe la acción, se mira si tiene like
+				$accion=Accion::findOne(['id_usuario'=>Yii::$app->user->identity->id, 'id_post'=>$id]);
+
+				if($accion->like!=1){
+					//Dar like
+					$accion->updateLike();
+				}
+				return $this->redirect(Yii::$app->request->referrer);
+			}
+		}
+	}
+
+	public function actionDislike($id=null){
+		if(!Yii::$app->user->isGuest){
+			//Comprobar si tiene like del usuario en sesión
+			$comprobar=Accion::find()->where(['id_usuario'=>Yii::$app->user->identity->id, 'id_post'=>$id])->count();
+
+			//Si no hay una acción para este post, se crea
+			if($comprobar !=1){
+				$nuevaAccion=new Accion();
+				$nuevaAccion->id_post=$id;
+				$nuevaAccion->id_usuario=Yii::$app->user->identity->id;
+				$nuevaAccion->like=0;
+				$nuevaAccion->dislike=1;
+
+				if($nuevaAccion->save())
+					return $this->redirect(Yii::$app->request->referrer);
+				else
+					return $this->redirect(Yii::$app->request->referrer);
+			}
+			else{
+				//Si ya existe la acción, se mira si tiene dislike
+				$accion=Accion::findOne(['id_usuario'=>Yii::$app->user->identity->id, 'id_post'=>$id]);
+
+				if($accion->dislike!=1){
+					//Dar dislike
+					$accion->updatedisLike();
+				}
+				return $this->redirect(Yii::$app->request->referrer);
 			}
 		}
 	}

@@ -3,6 +3,7 @@ use app\models\Post;
 use yii\helpers\Html;
 use yii\bootstrap5\LinkPager;
 use yii\helpers\Url;
+use app\models\Accion;
 
 if(empty($posts)){
     echo '<h1>No se ha encontrado ningún post</h1>';
@@ -79,8 +80,11 @@ if(empty($posts)){
 		    $totalRespuestas=Post::find()->where(['id_post_raiz'=>$post->id_post])->count();
         ?>
 		<div class="tt-col-category"><a href="<?= Url::toRoute(['categoria/una', 'id'=>$categoria->id_categoria]);?>"><span class="tt-badge" style="background-color: <?php echo $categoria->color_categoria;?>"><?= Html::encode("{$categoria->abreviatura}")?></span></a></div>
-		<div class="tt-col-value  hide-mobile">308</div>
-		<div class="tt-col-value tt-color-select  hide-mobile"><?= $totalRespuestas?></div>
+		<?php
+            $likes=Accion::find()->where(['id_post'=>$post->id_post, 'like'=>1])->count();
+        ?>
+        <div class="tt-col-value  hide-mobile"><?= Html::encode("{$likes}")?></div>
+		<div class="tt-col-value tt-color-select  hide-mobile"><?=  Html::encode("{$totalRespuestas}")?></div>
 		<div class="tt-col-value  hide-mobile"><?= Html::encode("{$post->vistas_post}")?></div>
 		<div class="tt-col-value hide-mobile"><?= $post->diasDesdePublicacion() ?>d</div>
 	</div>

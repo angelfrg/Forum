@@ -84,4 +84,16 @@ class Accion extends \yii\db\ActiveRecord
     {
         return new AccionQuery(get_called_class());
     }
+
+	public function updateLike(){
+		$this->like=1;
+		$this->dislike=0;
+		$this->save();
+	}
+
+	public function updatedisLike(){
+		$this->like=0;
+		$this->dislike=1;
+		$this->save();
+	}
 }

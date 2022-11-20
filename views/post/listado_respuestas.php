@@ -29,7 +29,7 @@ if(empty($respuestas)){
             </a>
 		</div>
 		<div class="tt-col-description">
-			<h6 class="tt-title"><a href="<?= Url::toRoute(['post/detalle','id'=>$respuesta->id_post]);?>">
+			<h6 class="tt-title"><a href="<?= Url::toRoute(['post/detalle','id'=>$respuesta->id_post_raiz]);?>">
 					<?= Html::encode("{$respuesta->titulo_post}")?>
 				</a></h6>
 			<div class="row align-items-center no-gutters hide-desktope">
