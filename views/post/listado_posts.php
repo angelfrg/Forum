@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\bootstrap5\LinkPager;
 use yii\helpers\Url;
 use app\models\Accion;
+use yii\widgets\Pjax;
 
 if(empty($posts)){
     echo '<h1>No se ha encontrado ningún post</h1>';
@@ -37,6 +38,7 @@ if(empty($posts)){
         </div>
         <?php endif;?>
     </div>
+    <?php //Pjax::begin();?>
 	<?php foreach ($posts as $post): ?>
 	<div class="tt-item">
 		<div class="tt-col-avatar">
@@ -93,3 +95,4 @@ if(empty($posts)){
 <div style="margin-top: 2%">
 	<?= LinkPager::widget(['pagination' => $pagination]) ?>
 </div>
+<?php //Pjax::end(); ?>

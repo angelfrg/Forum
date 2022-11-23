@@ -10,6 +10,7 @@ use yii\bootstrap5\Tabs;
 use yii\data\Pagination;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\ActiveForm;
 use yii\widgets\Pjax;
 
 ?>
@@ -61,6 +62,11 @@ use yii\widgets\Pjax;
 
 <?php //Poner contenido de cada pestaña
 
+//Ver que tab poner activo
+$activo='tabactividad';
+if(isset($_GET['tab']))
+    $activo = $_GET['tab'];
+
 //TAB Actividad
 /*******************************************************************************/
 //Se indica un listado de los posts
@@ -68,6 +74,7 @@ $actividad=Post::find()->where(['id_usuario'=>$usuario->id_usuario]);
 
 $paginationActividad = new Pagination([
 	'defaultPageSize' => 5,
+	'pageParam'=>'actividadPage',
 	'totalCount' => $actividad->count(),
 ]);
 
@@ -84,6 +91,7 @@ $sql=Post::find()->where(['id_usuario'=>$usuario->id_usuario, 'id_post_raiz'=>nu
 
 $pagination = new Pagination([
     'defaultPageSize' => 5,
+	'pageParam'=>'postPage',
     'totalCount' => $sql->count(),
 ]);
 
@@ -100,6 +108,7 @@ $sqlrespuestas=Post::find()->where(['not', ['id_post_raiz'=>null]])
 
 $paginationRespuestas = new Pagination([
 	'defaultPageSize' => 5,
+	'pageParam'=>'respuestaPage',
 	'totalCount' => $sqlrespuestas->count(),
 ]);
 
@@ -116,6 +125,7 @@ $seguidores=Seguidores::find()->where(['id_seguido'=>$usuario->id_usuario]);
 
 $paginationSeguidores = new Pagination([
 	'defaultPageSize' => 5,
+	'pageParam'=>'seguidoresPage',
 	'totalCount' => $seguidores->count(),
 ]);
 
@@ -136,6 +146,7 @@ $siguiendo=Seguidores::find()->where(['id_seguidor'=>$usuario->id_usuario]);
 
 $paginationSiguiendo = new Pagination([
 	'defaultPageSize' => 5,
+	'pageParam'=>'seguidosPage',
 	'totalCount' => $siguiendo->count(),
 ]);
 
@@ -155,6 +166,8 @@ $suscripcionCategorias=SuscripcionCategoria::find()->where(['id_usuario'=>$usuar
 
 $paginationCategorias = new Pagination([
 	'defaultPageSize' => 3,
+	'pageParam'=>'categoriasPage',
+	'forcePageParam' => false,
 	'totalCount' => $suscripcionCategorias->count(),
 ]);
 
@@ -170,8 +183,8 @@ $categorias=Categoria::find()
 <div class="tt-wrapper">
     <div class="tt-wrapper-inner">
 <?php
-Pjax::begin();
 echo Tabs::widget([
+
 	'items' => [
 		[
 			'label' => 'Actividad',
@@ -179,7 +192,7 @@ echo Tabs::widget([
                             "pagination" => $paginationActividad,
                             "posts"=>$postsActividad,
                         ]),
-			'active' => true,
+			'active' => strcmp($activo, 'tabactividad')==0,
 		],
 		[
 			'label' => 'Posts',
@@ -187,6 +200,7 @@ echo Tabs::widget([
 				"pagination" => $pagination,
 				"posts"=>$posts,
 			]),
+			'active' => strcmp($activo, 'tabposts')==0,
 		],
 		[
 			'label' => 'Respuestas',
@@ -194,6 +208,7 @@ echo Tabs::widget([
 				"pagination" => $paginationRespuestas,
 				"respuestas"=>$respuestas,
 			]),
+			'active' => strcmp($activo, 'tabrespuestas')==0,
 		],
 		[
 			'label' => $seguidores->count().' Seguidores',
@@ -202,6 +217,7 @@ echo Tabs::widget([
 				"usuarios"=>$seguidoresTotal,
                 "id_perfil"=>$usuario->id_usuario,
 			]),
+			'active' => strcmp($activo, 'tabseguidores')==0,
 		],
 		[
 			'label' => $siguiendo->count().' Siguiendo',
@@ -210,13 +226,15 @@ echo Tabs::widget([
 				"usuarios"=>$siguiendoTotal,
 				"id_perfil"=>$usuario->id_usuario,
 			]),
+			'active' => strcmp($activo, 'tabsiguiendo')==0,
 		],
 		[
 			'label' => 'Categorías',
 			'content' => '<div style="margin-top: 2%">'.$this->render('@app/views/categoria/listado_categorias', [
-			'categorias'=>$categorias,
-			'pagination' => $paginationCategorias,
-		    ]).'</div>',
+                'categorias'=>$categorias,
+                'pagination' => $paginationCategorias,
+                ]).'</div>',
+			'active' => strcmp($activo, 'tabcategorias')==0,
 		],
 	],
 ]);
@@ -232,7 +250,7 @@ echo Tabs::widget([
 				</svg>
 			</span>
             <span class="tt-icon-text">
-				Settings
+				Ajustes
 			</span>
             <span class="tt-icon-close">
 				<svg>
@@ -241,74 +259,40 @@ echo Tabs::widget([
 			</span>
         </a>
     </div>
-    <form class="form-default">
-        <div class="tt-form-upload">
-            <div class="row no-gutter">
-                <div class="col-auto">
-                    <div class="tt-avatar">
-                        <svg>
-                            <use xlink:href="#icon-ava-d"></use>
-                        </svg>
-                    </div>
-                </div>
-                <div class="col-auto ml-auto">
-                    <a href="#" class="btn btn-primary">Upload Picture</a>
-                </div>
-            </div>
+
+	<?php
+	$form = ActiveForm::begin(
+		[
+			'options' => [
+				'class' => 'form-default'
+			]
+		]
+	);
+	?>
+        <div class="form-group">
+			<?= $form->field($usuario, 'nombre_usuario')->textInput(['class'=>'form-control', 'id'=>'nombreUsuario',
+				'placeholder'=>'Nombre', 'maxlength'=>'20'])->label('Nombre') ?>
         </div>
         <div class="form-group">
-            <label for="settingsUserName">Username</label>
-            <input type="text" name="name" class="form-control" id="settingsUserName" placeholder="azyrusmax">
+			<?= $form->field($usuario, 'apellidos_usuario')->textInput(['class'=>'form-control', 'id'=>'apellidosUsuario',
+				'placeholder'=>'Apellidos', 'maxlength'=>'40'])->label('Apellidos') ?>
         </div>
         <div class="form-group">
-            <label for="settingsUserEmail">Email</label>
-            <input type="text" name="name" class="form-control" id="settingsUserEmail" placeholder="Sample@sample.com">
+            <label for="inputTopicTitle">Carrera</label>
+			<?=
+                $form->field($usuario, 'id_carrera')->dropDownList($listaCategorias,
+                    ['prompt'=>'Selecciona una ...', 'class'=>'form-control'])->label(false);
+			?>
         </div>
         <div class="form-group">
-            <label for="settingsUserPassword">Password</label>
-            <input type="password" name="name" class="form-control" id="settingsUserPassword" placeholder="************">
+			<?= $form->field($usuario, 'password')->passwordInput(['class'=>'form-control', 'id'=>'passwordUsuario',
+				'placeholder'=>'**********', 'maxlength'=>'40'])->label('Contraseña') ?>
         </div>
+
         <div class="form-group">
-            <label for="settingsUserLocation">Location</label>
-            <input type="text" name="name" class="form-control" id="settingsUserLocation" placeholder="Slovakia">
+			<?= Html::submitButton('Guardar Usuario', ['class' => 'btn btn-secondary', 'name' => 'guardarUsuario']) ?>
         </div>
-        <div class="form-group">
-            <label for="settingsUserWebsite">Website</label>
-            <input type="text" name="name" class="form-control" id="settingsUserWebsite" placeholder="Sample.com">
-        </div>
-        <div class="form-group">
-            <label for="settingsUserAbout">About</label>
-            <textarea name="" placeholder="Few words about you" class="form-control" id="settingsUserAbout"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="settingsUserAbout">Notify me via Email</label>
-            <div class="checkbox-group">
-                <input type="checkbox" id="settingsCheckBox01" name="checkbox">
-                <label for="settingsCheckBox01">
-                    <span class="check"></span>
-                    <span class="box"></span>
-                    <span class="tt-text">When someone replies to my thread</span>
-                </label>
-            </div>
-            <div class="checkbox-group">
-                <input type="checkbox" id="settingsCheckBox02" name="checkbox">
-                <label for="settingsCheckBox02">
-                    <span class="check"></span>
-                    <span class="box"></span>
-                    <span class="tt-text">When someone likes my thread or reply</span>
-                </label>
-            </div>
-            <div class="checkbox-group">
-                <input type="checkbox" id="settingsCheckBox03" name="checkbox">
-                <label for="settingsCheckBox03">
-                    <span class="check"></span>
-                    <span class="box"></span>
-                    <span class="tt-text">When someone mentions me</span>
-                </label>
-            </div>
-        </div>
-        <div class="form-group">
-            <a href="#" class="btn btn-secondary">Save</a>
-        </div>
-    </form>
+	<?php ActiveForm::end(); ?>
+
+
 </div>

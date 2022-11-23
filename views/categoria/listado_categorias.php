@@ -5,6 +5,7 @@ use app\models\SuscripcionCategoria;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\bootstrap5\LinkPager;
+use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
 
@@ -30,6 +31,7 @@ use yii\bootstrap5\LinkPager;
         </form>
     </div>
 </div>
+	<?php //Pjax::begin();?>
 <div class="tt-categories-list">
     <div class="row">
         <?php foreach ($categorias as $categoria): ?>
@@ -88,4 +90,5 @@ use yii\bootstrap5\LinkPager;
 		<?= LinkPager::widget(['pagination' => $pagination]) ?>
     </div>
 </div>
+	<?php //Pjax::end(); ?>
 </div>

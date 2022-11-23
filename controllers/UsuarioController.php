@@ -1,9 +1,11 @@
 <?php
 
 namespace app\controllers;
+use app\models\Categoria;
 use Yii;
 use app\models\Seguidores;
 use app\models\Usuario;
+use yii\helpers\ArrayHelper;
 use \yii\web\Controller;
 
 class UsuarioController extends Controller
@@ -11,7 +13,18 @@ class UsuarioController extends Controller
     public function actionPerfil($id=null)
     {
 		$usuario=Usuario::findOne($id);
-        return $this->render('perfil',['usuario'=>$usuario]);
+
+		$categorias=Categoria::find()->orderBy('nombre_categoria')->all();
+		$lista=ArrayHelper::map($categorias,'id_categoria', 'nombre_categoria');
+
+		if ($this->request->isPost && $usuario->load($this->request->post())) {
+
+			$usuario->password=hash("sha1", $usuario->password);
+			if($usuario->save())
+				return $this->render('perfil',['usuario'=>$usuario, 'listaCategorias'=>$lista]);
+		}
+
+        return $this->render('perfil',['usuario'=>$usuario, 'listaCategorias'=>$lista]);
     }
 
 	public function actionSeguir($id=null){
