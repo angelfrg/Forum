@@ -106,9 +106,11 @@ class SiteController extends Controller
 		if(Yii::$app->request->post()){
 			if(strcmp(Yii::$app->request->post()['myselect'],'logout')==0){
 				return $this->actionLogout();
-			}else{
+			}else if(strcmp(Yii::$app->request->post()['myselect'],'perfil')==0){
 				//Ir a perfil de usuario
 				$this->redirect(array('usuario/perfil', 'id'=>Yii::$app->user->identity->id));
+			}else if(strcmp(Yii::$app->request->post()['myselect'],'mensajes')==0){
+				$this->redirect(array('mensaje/listadochats'));
 			}
 		}else
 			$this->goHome();

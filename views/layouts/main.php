@@ -122,7 +122,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => 'fa
 
 					echo "<select name='myselect' id='myselect' onchange='this.form.submit()'>
                             <option value='nombre' hidden>".Yii::$app->user->identity->nombre_usuario."</option>
-                            <option value='perfil'>Perfil</option>";
+                            <option value='perfil'>Perfil</option>
+                            <option value='mensajes'>Mensajes</option>";
                     echo "<option value='logout'>".'Cerrar Sesión'."</option>";
                     echo '</select>';
                     echo Html::endForm();
@@ -305,3 +306,124 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => 'fa
 </body>
 </html>
 <?php $this->endPage() ?>
+
+<script>
+
+    $(document).ready(function(){
+
+        fetch_user();
+
+        setInterval(function(){
+            update_last_activity();
+            get_id_to_check()
+            fetch_user();
+            //update_chat_history_data();
+        }, 5000);
+
+        function fetch_user()
+        {
+            $.ajax({
+                url:'<?php echo \Yii::$app->getUrlManager()->createUrl('usuario/fetchuser') ?>',
+                method:"POST",
+                success:function(data){
+                    $('#user_details').html(data);
+                }
+            })
+        }
+
+        function update_last_activity()
+        {
+            $.ajax({
+                url:"<?php echo \Yii::$app->getUrlManager()->createUrl('usuario/actualizaractividad') ?>",
+                success:function()
+                {
+                    //console.log("Actividad actualizada");
+                }
+            })
+        }
+
+        function get_id_to_check(){
+            $('.chat_history').each(function(){
+                var id = $(this).data('touserid');
+                check_if_online(id);
+            });
+        }
+
+        function check_if_online(id_usuario){
+            //Obtener id del usuario con chat
+            $.ajax({
+                url:'<?php echo \Yii::$app->getUrlManager()->createUrl('usuario/isonline') ?>',
+                method:"GET",
+                data:{id:id_usuario},
+                success:function(data){
+                    $('#onlinetag').html(data);
+                }
+            })
+        }
+
+        /*function make_chat_dialog_box(id_receptor, nombre_usuario_receptor)
+        {
+            var modal_content = '<div id="user_dialog_'+id_receptor+'" class="user_dialog" title="You have chat with '+nombre_usuario_receptor+'">';
+            modal_content += '<div style="height:400px; border:1px solid #ccc; overflow-y: scroll; margin-bottom:24px; padding:16px;" class="chat_history" data-touserid="'+id_receptor+'" id="chat_history_'+id_receptor+'">';
+            modal_content += '</div>';
+            modal_content += '<div class="form-group">';
+            modal_content += '<textarea name="chat_message_'+id_receptor+'" id="chat_message_'+id_receptor+'" class="form-control"></textarea>';
+            modal_content += '</div><div class="form-group" align="right">';
+            modal_content+= '<button type="button" name="send_chat" id="'+id_receptor+'" class="btn btn-info send_chat">Send</button></div></div>';
+            $('#user_model_details').html(modal_content);
+            update_chat_history_data();
+        }
+
+        $(document).on('click', '.start_chat', function(){
+            var id_receptor = $(this).data('touserid');
+            var nombre_usuario_receptor = $(this).data('tousername');
+            make_chat_dialog_box(id_receptor, nombre_usuario_receptor);
+            $("#user_dialog_"+id_receptor).dialog({
+                autoOpen:false,
+                width:400
+            });
+            $('#user_dialog_'+id_receptor).dialog('open');
+        });
+
+        $(document).on('click', '.send_chat', function(){
+            var id_receptor = $(this).attr('id');
+            var cuerpo_mensaje = $('#chat_message_'+id_receptor).val();
+            $.ajax({
+                url:"insert_chat.php",
+                method:"POST",
+                data:{id_receptor:id_receptor, cuerpo_mensaje:cuerpo_mensaje},
+                success:function(data)
+                {
+                    $('#chat_message_'+id_receptor).val('');
+                    $('#chat_history_'+id_receptor).html(data);
+                }
+            })
+        });
+
+
+        function fetch_user_chat_history(id_receptor)
+        {
+            $.ajax({
+                url:"fetch_user_chat_history.php",
+                method:"POST",
+                data:{id_receptor:id_receptor},
+                success:function(data){
+                    $('#chat_history_'+id_receptor).html(data);
+                }
+            })
+        }
+
+        function update_chat_history_data()
+        {
+            $('.chat_history').each(function(){
+                var id_receptor = $(this).data('touserid');
+                fetch_user_chat_history(id_receptor);
+            });
+        }
+
+        $(document).on('click', '.ui-button-icon', function(){
+            $('.user_dialog').dialog('destroy').remove();
+        });*/
+    });
+
+</script>

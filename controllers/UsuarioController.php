@@ -2,10 +2,13 @@
 
 namespace app\controllers;
 use app\models\Categoria;
+use app\models\Mensaje;
 use Yii;
 use app\models\Seguidores;
 use app\models\Usuario;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\helpers\Url;
 use \yii\web\Controller;
 
 class UsuarioController extends Controller
@@ -61,6 +64,65 @@ class UsuarioController extends Controller
 				$this->goHome();
 		}else
 			$this->goHome();
+	}
+
+	public function actionFetchuser(){
+		$usuarios=Usuario::find()
+			->innerJoin('mensaje', 'mensaje.id_receptor=usuario.id_usuario')
+			->where(['mensaje.id_emisor'=>Yii::$app->user->id])
+			->orWhere(['mensaje.id_receptor'=>Yii::$app->user->id])
+			->andWhere(['not', ['usuario.id_usuario'=>Yii::$app->user->id]])
+			->orderBy(['mensaje.fecha_mensaje'=>SORT_DESC])
+			->all();
+
+		$output = '';
+
+		foreach($usuarios as $usuario)
+		{
+			$ultimoMensaje=(new Mensaje)->obtenerUltimoMensaje($usuario->id_usuario);
+			if($ultimoMensaje->id_emisor == Yii::$app->user->id)
+				$emisor='Yo: ';
+			else
+				$emisor=$usuario->nombre_usuario.': ';
+
+			$output .= '<a href='.Url::toRoute(['mensaje/listadochats', 'id'=>$usuario->id_usuario]).' class="tt-item">
+					<div class="tt-col-avatar">
+						<svg class="tt-icon">
+							<use xlink:href="#icon-ava-'.strtolower($usuario->nombre_usuario[0]).'"></use>
+						</svg>
+					</div>
+					<div class="tt-col-description">
+						<h4 class="tt-title"><span>'.Html::encode("{$usuario->nombre_usuario}").'</span> <span class="time">'.date_create($ultimoMensaje->fecha_mensaje)->format("d/m/Y").'</span></h4>
+						<div class="tt-message">'.Html::encode("{$emisor}").Html::encode("{$ultimoMensaje->cuerpo_mensaje}").'</div>
+					</div>
+				</a>';
+		}
+
+		return $output;
+	}
+
+	public function actionActualizaractividad(){
+		$usuario=Usuario::findOne(['id_usuario'=>Yii::$app->user->id]);
+		$usuario->updateUltimaConexion();
+		return true;
+	}
+
+	public function actionIsonline($id=null){
+		$status = '';
+		$current_timestamp = strtotime(date("Y-m-d H:i:s") . '- 10 second');
+		$current_timestamp = date('Y-m-d H:i:s', $current_timestamp);
+		$usuario=Usuario::findOne(['id_usuario'=>$id]);
+
+		if($usuario->ult_conexion > $current_timestamp)
+		{
+			$status = '<span>En linea</span>';
+		}
+		else
+		{
+			$status = '<span>Desconectado</span>';
+		}
+
+		return $status;
 	}
 
 }

@@ -46,7 +46,7 @@ use yii\widgets\Pjax;
 			}
 
 			if ($usuario->id_usuario !== Yii::$app->user->identity->id) {
-				echo '<a href="#" class="btn btn-primary">Mensaje</a>';
+				echo '<a href="'.Url::toRoute(['mensaje/listadochats', 'id'=>$usuario->id_usuario]).'" class="btn btn-primary">Mensaje</a>';
                 if(Seguidores::find()->where(['id_seguidor'=>Yii::$app->user->identity->id, 'id_seguido'=>$usuario->id_usuario])->count()!==1)
 				    echo '<a href="'.Url::toRoute(['usuario/seguir', 'id'=>$usuario->id_usuario]).'" class="btn btn-secondary">Seguir</a>';
                 else
@@ -241,6 +241,7 @@ echo Tabs::widget([
 ?>
     </div>
 </div>
+<?php if(Yii::$app->user->id == $usuario->id_usuario): ?>
 <div id="js-popup-settings" class="tt-popup-settings">
     <div class="tt-btn-col-close">
         <a href="#">
@@ -296,3 +297,4 @@ echo Tabs::widget([
 
 
 </div>
+<?php endif; ?>
