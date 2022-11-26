@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use app\models\Mensaje;
+use yii\widgets\ActiveForm;
 use yii\widgets\Pjax;
 ?>
 <div class="col-md-8">
@@ -28,30 +29,24 @@ use yii\widgets\Pjax;
 			</i>
 		</a>
 	</div>
-	<div class="tt-list-time-topic" style="height:400px; overflow-y: scroll;">
-		<div class="tt-item-title">
-			<span>12/26/2017</span>
-		</div>
-		<div class="tt-item">
-			<div class="tt-col-avatar">
-				<svg class="tt-icon">
-					<use xlink:href="#icon-ava-k"></use>
-				</svg>
-			</div>
-			<div class="tt-col-description">
-				<h4 class="tt-title" style="font-size: 16px; font-weight: bold; color: black">Kevin <span class="time">3:12 AM</span></h4>
-				<p>How is it going man? Did you see my new forum post?</p>
-			</div>
-		</div>
+
+    <?php //Se genera con ajax el listado de chats ?>
+	<div class="tt-list-time-topic prueba" name="prueba" id="chat_history" style="height:400px; overflow-y: scroll;">
+        <div class="tt-col-description">
+            <h4 class="tt-title" style="margin-left: 5%; font-size: 16px; font-weight: bold; color: black">Cargando mensajes... </h4>
+        </div>
+
 	</div>
+
+    <?php //Formulario enviar el mensaje ?>
 	<div class="tt-wrapper-inner">
 		<div class="pt-editor form-default">
 			<div class="form-group">
-				<textarea name="message" class="form-control" rows="5" placeholder="Write your message here"></textarea>
+                <textarea name="chat_message" id="chat_message" class="form-control" rows="5" placeholder="Escribe tu mensaje aquí"></textarea>
 			</div>
 			<div class="pt-row">
 				<div class="col-auto ml-auto">
-					<a href="#" class="btn btn-secondary btn-custom">Send</a>
+                    <button href="#" name="send_chat" class="btn btn-secondary btn-custom send_chat">Enviar</button>
 				</div>
 			</div>
 		</div>

@@ -317,8 +317,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => 'fa
             update_last_activity();
             get_id_to_check()
             fetch_user();
-            //update_chat_history_data();
-        }, 5000);
+            update_chat_history_data();
+        }, 1000);
 
         function fetch_user()
         {
@@ -361,54 +361,39 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => 'fa
             })
         }
 
-        /*function make_chat_dialog_box(id_receptor, nombre_usuario_receptor)
-        {
-            var modal_content = '<div id="user_dialog_'+id_receptor+'" class="user_dialog" title="You have chat with '+nombre_usuario_receptor+'">';
-            modal_content += '<div style="height:400px; border:1px solid #ccc; overflow-y: scroll; margin-bottom:24px; padding:16px;" class="chat_history" data-touserid="'+id_receptor+'" id="chat_history_'+id_receptor+'">';
-            modal_content += '</div>';
-            modal_content += '<div class="form-group">';
-            modal_content += '<textarea name="chat_message_'+id_receptor+'" id="chat_message_'+id_receptor+'" class="form-control"></textarea>';
-            modal_content += '</div><div class="form-group" align="right">';
-            modal_content+= '<button type="button" name="send_chat" id="'+id_receptor+'" class="btn btn-info send_chat">Send</button></div></div>';
-            $('#user_model_details').html(modal_content);
+        /* SIN USO
+        $(document).on('load', '.start_chat', function(){
+            console.log("Inicio Chat");
+
             update_chat_history_data();
-        }
+        });*/
 
-        $(document).on('click', '.start_chat', function(){
-            var id_receptor = $(this).data('touserid');
-            var nombre_usuario_receptor = $(this).data('tousername');
-            make_chat_dialog_box(id_receptor, nombre_usuario_receptor);
-            $("#user_dialog_"+id_receptor).dialog({
-                autoOpen:false,
-                width:400
-            });
-            $('#user_dialog_'+id_receptor).dialog('open');
-        });
-
+        //TO DO
         $(document).on('click', '.send_chat', function(){
-            var id_receptor = $(this).attr('id');
-            var cuerpo_mensaje = $('#chat_message_'+id_receptor).val();
+            var id_usuario = $('.chat_history').data('touserid');
+            var cuerpo_mensaje = $('#chat_message').val();
             $.ajax({
-                url:"insert_chat.php",
-                method:"POST",
-                data:{id_receptor:id_receptor, cuerpo_mensaje:cuerpo_mensaje},
+                url:"<?php echo \Yii::$app->getUrlManager()->createUrl('mensaje/insertarmensaje') ?>",
+                method:"GET",
+                data:{id:id_usuario, cuerpo_mensaje:cuerpo_mensaje},
                 success:function(data)
                 {
-                    $('#chat_message_'+id_receptor).val('');
-                    $('#chat_history_'+id_receptor).html(data);
+                    $('#chat_message').val('');
+                    $('#chat_history').html(data);
+
                 }
             })
         });
 
-
-        function fetch_user_chat_history(id_receptor)
+        function fetch_user_chat_history(id_usuario)
         {
             $.ajax({
-                url:"fetch_user_chat_history.php",
-                method:"POST",
-                data:{id_receptor:id_receptor},
+                url:"<?php echo \Yii::$app->getUrlManager()->createUrl('mensaje/fetchuserchathistory') ?>",
+                method:"GET",
+                data:{id:id_usuario},
                 success:function(data){
-                    $('#chat_history_'+id_receptor).html(data);
+                    $('#chat_history').html(data);
+
                 }
             })
         }
@@ -416,14 +401,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => 'fa
         function update_chat_history_data()
         {
             $('.chat_history').each(function(){
-                var id_receptor = $(this).data('touserid');
-                fetch_user_chat_history(id_receptor);
+                var id = $(this).data('touserid');
+                fetch_user_chat_history(id);
             });
         }
-
-        $(document).on('click', '.ui-button-icon', function(){
-            $('.user_dialog').dialog('destroy').remove();
-        });*/
     });
 
 </script>

@@ -38,8 +38,8 @@ use yii\widgets\Pjax;
         </div>
 
         <?php
+            //$model=new Mensaje();
             if(isset($_GET['id']) && $_GET['id']!=Yii::$app->user->id){
-
                 $usuarioChat=\app\models\Usuario::findOne(['id_usuario'=>$_GET['id']]);
 				echo $this->render('chat_usuario', ['usuarioChat'=>$usuarioChat]);
             }

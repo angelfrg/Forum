@@ -85,7 +85,7 @@ class UsuarioController extends Controller
 			else
 				$emisor=$usuario->nombre_usuario.': ';
 
-			$output .= '<a href='.Url::toRoute(['mensaje/listadochats', 'id'=>$usuario->id_usuario]).' class="tt-item">
+			$output .= '<a href='.Url::toRoute(['mensaje/listadochats', 'id'=>$usuario->id_usuario]).' class="tt-item start_chat">
 					<div class="tt-col-avatar">
 						<svg class="tt-icon">
 							<use xlink:href="#icon-ava-'.strtolower($usuario->nombre_usuario[0]).'"></use>
