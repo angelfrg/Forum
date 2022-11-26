@@ -68,7 +68,7 @@ class UsuarioController extends Controller
 
 	public function actionFetchuser(){
 		$usuarios=Usuario::find()
-			->innerJoin('mensaje', 'mensaje.id_receptor=usuario.id_usuario')
+			->innerJoin('mensaje', 'mensaje.id_receptor=usuario.id_usuario OR usuario.id_usuario=mensaje.id_emisor')
 			->where(['mensaje.id_emisor'=>Yii::$app->user->id])
 			->orWhere(['mensaje.id_receptor'=>Yii::$app->user->id])
 			->andWhere(['not', ['usuario.id_usuario'=>Yii::$app->user->id]])
@@ -92,7 +92,7 @@ class UsuarioController extends Controller
 						</svg>
 					</div>
 					<div class="tt-col-description">
-						<h4 class="tt-title"><span>'.Html::encode("{$usuario->nombre_usuario}").'</span> <span class="time">'.date_create($ultimoMensaje->fecha_mensaje)->format("d/m/Y").'</span></h4>
+						<h4 class="tt-title"><span>'.Html::encode("{$usuario->nombre_usuario}").' (Nuevo mensaje)</span> <span class="time">'.date_create($ultimoMensaje->fecha_mensaje)->format("d/m/Y").'</span></h4>
 						<div class="tt-message">'.Html::encode("{$emisor}").Html::encode("{$ultimoMensaje->cuerpo_mensaje}").'</div>
 					</div>
 				</a>';

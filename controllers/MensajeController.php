@@ -46,6 +46,7 @@ class MensajeController extends \yii\web\Controller
 		$mensajechat='';
 		foreach ($mensajes as $mensaje){
 			$usuario=Usuario::findOne(['id_usuario'=>$mensaje->id_emisor]);
+			$fecha=date_create($mensaje->fecha_mensaje)->format("H:i:s d/m/Y");
 			$mensajechat.='<div class="tt-item">
 					<div class="tt-col-avatar">
 						<svg class="tt-icon">
@@ -53,7 +54,7 @@ class MensajeController extends \yii\web\Controller
 						</svg>
 					</div>
 					<div class="tt-col-description">
-						<h4 class="tt-title" style="font-size: 16px; font-weight: bold; color: black">'.$usuario->nombre_usuario.' <span class="time">3:12 AM</span></h4>
+						<h4 class="tt-title" style="font-size: 16px; font-weight: bold; color: black">'.$usuario->nombre_usuario.' <span class="time">'.$fecha.'</span></h4>
 						<p>'.$mensaje->cuerpo_mensaje.'</p>
 					</div>
         		</div>';
