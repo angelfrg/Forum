@@ -85,6 +85,11 @@ class UsuarioController extends Controller
 			else
 				$emisor=$usuario->nombre_usuario.': ';
 
+			if($ultimoMensaje->count_unseen_message($usuario->id_usuario) > 0)
+				$nuevos=' (Nuevo mensaje)';
+			else
+				$nuevos='';
+
 			$output .= '<a href='.Url::toRoute(['mensaje/listadochats', 'id'=>$usuario->id_usuario]).' class="tt-item start_chat">
 					<div class="tt-col-avatar">
 						<svg class="tt-icon">
@@ -92,7 +97,7 @@ class UsuarioController extends Controller
 						</svg>
 					</div>
 					<div class="tt-col-description">
-						<h4 class="tt-title"><span>'.Html::encode("{$usuario->nombre_usuario}").' (Nuevo mensaje)</span> <span class="time">'.date_create($ultimoMensaje->fecha_mensaje)->format("d/m/Y").'</span></h4>
+						<h4 class="tt-title"><span>'.Html::encode("{$usuario->nombre_usuario}").' '.$nuevos.'</span> <span class="time">'.date_create($ultimoMensaje->fecha_mensaje)->format("d/m/Y").'</span></h4>
 						<div class="tt-message">'.Html::encode("{$emisor}").Html::encode("{$ultimoMensaje->cuerpo_mensaje}").'</div>
 					</div>
 				</a>';

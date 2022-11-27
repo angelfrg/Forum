@@ -61,7 +61,11 @@ class MensajeController extends \yii\web\Controller
 		}
 
 		//Actualizar estado de mensajes de 1 a 0 (Marcarlos como leidos) TO DO
+		$mensajesActualizar=Mensaje::find()->where(['id_emisor'=>$id, 'id_receptor'=>Yii::$app->user->id, 'estado_mensaje'=>1])->all();
 
+		foreach ($mensajesActualizar as $msg){
+			$msg->updateEstado();
+		}
 
 		return $mensajechat;
 	}

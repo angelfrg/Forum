@@ -91,6 +91,11 @@ class Mensaje extends \yii\db\ActiveRecord
 		return $mensajes;
 	}
 
+	public function updateEstado(){
+		$this->estado_mensaje=0;
+		$this->save();
+	}
+
 	public function obtenerUltimoMensaje($id=null){
 		$ultimoMensaje=Mensaje::find()
 			->orderBy(['mensaje.fecha_mensaje'=>SORT_DESC])

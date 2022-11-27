@@ -311,6 +311,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => 'fa
 
     $(document).ready(function(){
 
+        <?php if (!Yii::$app->user->isGuest): ?>
         fetch_user();
 
         setInterval(function(){
@@ -319,6 +320,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => 'fa
             fetch_user();
             update_chat_history_data();
         }, 1000);
+        <?php endif; ?>
 
         function fetch_user()
         {
