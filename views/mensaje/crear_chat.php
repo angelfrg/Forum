@@ -14,7 +14,7 @@
 
 	<div class="tt-search-compose">
 		<div class="tt-input">
-			<input type="text" class="tt-search-input" placeholder="Type a name or multiple names">
+			<input type="text" class="tt-search-input" placeholder="Busca un usuario por su email">
 		</div>
 		<div class="tt-search-results">
 			<a href="#" class="tt-item">
@@ -31,16 +31,4 @@
 		</div>
 	</div>
 
-	<div class="tt-wrapper-inner">
-		<div class="pt-editor form-default">
-			<div class="form-group">
-				<textarea name="message" class="form-control" rows="5" placeholder="Write your message here"></textarea>
-			</div>
-			<div class="pt-row">
-				<div class="col-auto ml-auto">
-					<a href="#" class="btn btn-secondary btn-custom">Send</a>
-				</div>
-			</div>
-		</div>
-	</div>
 </div>

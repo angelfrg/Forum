@@ -71,15 +71,24 @@ use yii\helpers\Url;
 	<div class="tt-innerwrapper">
 		<h6 class="tt-title">Tags relacionados</h6>
 		<ul class="tt-list-badge">
-			<li><a href="#"><span class="tt-badge">world politics</span></a></li>
-			<li><a href="#"><span class="tt-badge">human rights</span></a></li>
-			<li><a href="#"><span class="tt-badge">trump</span></a></li>
-			<li><a href="#"><span class="tt-badge">climate change</span></a></li>
-			<li><a href="#"><span class="tt-badge">foreign policy</span></a></li>
-			<li><a href="#"><span class="tt-badge">world politics</span></a></li>
-			<li><a href="#"><span class="tt-badge">human rights</span></a></li>
-			<li><a href="#"><span class="tt-badge">trump</span></a></li>
-			<li><a href="#"><span class="tt-badge">climate change</span></a></li>
+			<?php //Tags de posts sobre la categoria
+			$postsTags=Post::find()->where(['id_categoria'=>$categoria->id_categoria,'id_post_raiz'=>null ])
+				->orderBy(['fecha_post'=>SORT_DESC])->limit(8)->all();
+
+			$tags=array();
+			if(isset($postsTags)){
+				foreach ($postsTags as $postTag)
+					$tags = array_merge($tags, $postTag->obtenerListaTags());
+			}
+
+			if(!empty($tags)){
+				foreach ($tags as $tag){
+					if($tag!="")
+						echo '<li><a href="#"><span class="tt-badge">'.$tag.'</span></a></li>';
+				}
+			}else
+				echo '<li>No hay tags por el momento...</li>';
+			?>
 		</ul>
 	</div>
 </div>

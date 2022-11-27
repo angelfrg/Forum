@@ -63,12 +63,12 @@ use yii\widgets\Pjax;
 <?php //Poner contenido de cada pestaña
 
 //Ver que tab poner activo
-$activo='tabactividad';
+$activo='tabposts';
 if(isset($_GET['tab']))
     $activo = $_GET['tab'];
 
 //TAB Actividad
-/*******************************************************************************/
+/******************************************************************************
 //Se indica un listado de los posts
 $actividad=Post::find()->where(['id_usuario'=>$usuario->id_usuario]);
 
@@ -81,7 +81,7 @@ $paginationActividad = new Pagination([
 $postsActividad = $actividad->orderBy(['fecha_post'=>SORT_DESC])
 	->offset($paginationActividad->offset)
 	->limit($paginationActividad->limit)
-	->all();
+	->all();*/
 /*******************************************************************************/
 
 //TAB POSTS
@@ -183,10 +183,8 @@ $categorias=Categoria::find()
 <div class="tt-wrapper">
     <div class="tt-wrapper-inner">
 <?php
-echo Tabs::widget([
-
-	'items' => [
-		[
+/*
+ * [
 			'label' => 'Actividad',
 			'content' => $this->render("@app/views/post/listado_posts", [
                             "pagination" => $paginationActividad,
@@ -194,6 +192,12 @@ echo Tabs::widget([
                         ]),
 			'active' => strcmp($activo, 'tabactividad')==0,
 		],
+ * */
+
+echo Tabs::widget([
+
+	'items' => [
+
 		[
 			'label' => 'Posts',
 			'content' => $this->render("@app/views/post/listado_posts", [

@@ -53,14 +53,26 @@ use yii\widgets\Pjax;
 						<?= Html::encode("{$categoria->nombre_categoria}")?>
                     </div>
                     <div class="innerwrapper">
-                        <h6 class="tt-title">TAGS relacionados</h6>
+                        <h6 class="tt-title">TAGS recientes</h6>
                         <ul class="tt-list-badge">
-                            <?php //Tags de posts sobre la categoria ?>
-                            <li><a href="#"><span class="tt-badge">world politics</span></a></li>
-                            <li><a href="#"><span class="tt-badge">human rights</span></a></li>
-                            <li><a href="#"><span class="tt-badge">trump</span></a></li>
-                            <li><a href="#"><span class="tt-badge">climate change</span></a></li>
-                            <li><a href="#"><span class="tt-badge">foreign policy</span></a></li>
+                            <?php //Tags de posts sobre la categoria
+                                $posts=Post::find()->where(['id_categoria'=>$categoria->id_categoria,'id_post_raiz'=>null ])
+                                                    ->orderBy(['fecha_post'=>SORT_DESC])->limit(5)->all();
+
+                                $tags=array();
+                                if(isset($posts)){
+									foreach ($posts as $post)
+                                        $tags = array_merge($tags, $post->obtenerListaTags());
+                                }
+
+                                if(!empty($tags)){
+                                    foreach ($tags as $tag){
+                                        if($tag!="")
+                                            echo '<li><a href="#"><span class="tt-badge">'.$tag.'</span></a></li>';
+                                    }
+                                }else
+                                    echo '<li>No hay tags por el momento...</li>';
+                            ?>
                         </ul>
                     </div>
                     <?php
