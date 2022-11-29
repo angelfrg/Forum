@@ -41,12 +41,23 @@ class PostController extends Controller
 		]);
 	}
 
-	public function actionDetalle($id=null)
+	public function actionDetalle($id=null, $orden=null)
 	{
 		$post=Post::findOne($id);
 		//Modelo para crear respuestas
 		$model= new PostForm();
-		$respuestas=Post::find()->where(['id_post_raiz'=>$post->id_post])->all();
+
+		if(isset($orden)){
+			if(strcmp($orden, 'like')){
+
+				$respuestas=Post::find()->where(['id_post_raiz'=>$post->id_post])->all();
+
+			}elseif (strcmp($orden, 'recientes')){
+				$respuestas=Post::find()->where(['id_post_raiz'=>$post->id_post])->orderBy(['fecha_post'=>SORT_ASC])->all();
+			}else
+				$respuestas=Post::find()->where(['id_post_raiz'=>$post->id_post])->orderBy(['fecha_post'=>SORT_ASC])->all();
+		}else
+			$respuestas=Post::find()->where(['id_post_raiz'=>$post->id_post])->orderBy(['fecha_post'=>SORT_ASC])->all();
 
 		if(!Yii::$app->user->isGuest){
 			$post->incrementarVisitas();
@@ -74,7 +85,12 @@ class PostController extends Controller
 					if ($respuesta->save()) {
 						$usuario=Usuario::findOne(Yii::$app->user->id);
 						$usuario->addPuntos(20);
-						return $this->goBack();
+						$respuestas=Post::find()->where(['id_post_raiz'=>$post->id_post])->orderBy(['fecha_post'=>SORT_ASC])->all();
+						return $this->render('detalle_post', [
+							'post' => $post,
+							'respuestas'=>$respuestas,
+							'model'=>$model,
+						]);
 					} else {
 						return $this->render('detalle_post', [
 							'post' => $post,

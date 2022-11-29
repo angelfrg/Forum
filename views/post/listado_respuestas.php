@@ -4,6 +4,10 @@ use yii\helpers\Html;
 use yii\bootstrap5\LinkPager;
 use yii\helpers\Url;
 
+if(!isset($tab) || strcmp($_GET['tab'], 'tabrespuestas')!=0) $tab='tabrespuestas';
+//Yii::$app->request->queryParams['tab']= $tab;
+$_GET['tab']= $tab;
+
 if(empty($respuestas)){
 	echo '<h1>No se ha encontrado ninguna respuesta</h1>';
 	return 0;

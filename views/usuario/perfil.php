@@ -67,21 +67,6 @@ $activo='tabposts';
 if(isset($_GET['tab']))
     $activo = $_GET['tab'];
 
-//TAB Actividad
-/******************************************************************************
-//Se indica un listado de los posts
-$actividad=Post::find()->where(['id_usuario'=>$usuario->id_usuario]);
-
-$paginationActividad = new Pagination([
-	'defaultPageSize' => 5,
-	'pageParam'=>'actividadPage',
-	'totalCount' => $actividad->count(),
-]);
-
-$postsActividad = $actividad->orderBy(['fecha_post'=>SORT_DESC])
-	->offset($paginationActividad->offset)
-	->limit($paginationActividad->limit)
-	->all();*/
 /*******************************************************************************/
 
 //TAB POSTS
@@ -203,6 +188,7 @@ echo Tabs::widget([
 			'content' => $this->render("@app/views/post/listado_posts", [
 				"pagination" => $pagination,
 				"posts"=>$posts,
+                //'tab'=>'tabposts',
 			]),
 			'active' => strcmp($activo, 'tabposts')==0,
 		],
@@ -220,6 +206,7 @@ echo Tabs::widget([
 				"pagination" => $paginationSeguidores,
 				"usuarios"=>$seguidoresTotal,
                 "id_perfil"=>$usuario->id_usuario,
+                "pag"=>"seguidores",
 			]),
 			'active' => strcmp($activo, 'tabseguidores')==0,
 		],
@@ -229,6 +216,7 @@ echo Tabs::widget([
 				"pagination" => $paginationSiguiendo,
 				"usuarios"=>$siguiendoTotal,
 				"id_perfil"=>$usuario->id_usuario,
+				"pag"=>"siguiendo",
 			]),
 			'active' => strcmp($activo, 'tabsiguiendo')==0,
 		],

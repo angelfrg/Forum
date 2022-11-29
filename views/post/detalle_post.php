@@ -135,18 +135,16 @@ use yii\helpers\Url;
 			</div>
 			<hr>
 			<div class="row-object-inline form-default">
-				<h6 class="tt-title">Ordenar respuestas por:</h6>
+				<h6 class="tt-title">Respuestas recientes:</h6>
 				<ul class="tt-list-badge tt-size-lg">
-					<li><a href="#"><span class="tt-color02 tt-badge">Recientes</span></a></li>
-					<li><a href="#"><span class="tt-badge">Con más Likes</span></a></li>
-					<li><a href="#"><span class="tt-badge">Largas</span></a></li>
-					<li><a href="#"><span class="tt-badge">Cortas</span></a></li>
+					<li><a href="<?= Url::toRoute(['post/detalle', 'id'=>$post->id_post, 'orden'=>'recientes']);?>">
+                            <span class="<?php if((isset($_GET['orden']) && strcmp($_GET['orden'],'recientes')==0) || (!isset($_GET['orden']))) echo 'tt-color02'; else echo '' ?> tt-badge">Recientes</span></a></li>
+					<li><a href="<?= Url::toRoute(['post/detalle', 'id'=>$post->id_post, 'orden'=>'like']);?>">
+                            <span class="<?php if((isset($_GET['orden']) && strcmp($_GET['orden'],'like')==0)) echo 'tt-color02'; else echo '' ?> tt-badge">Con más Likes</span></a></li>
 				</ul>
 				<select class="tt-select form-control">
 					<option value="Recent">Recientes</option>
 					<option value="Most Liked">Con más Likes</option>
-					<option value="Longest">Mas largas</option>
-					<option value="Shortest">Mas cortas</option>
 				</select>
 			</div>
 		</div>

@@ -6,6 +6,9 @@ use yii\helpers\Url;
 use app\models\Accion;
 use yii\widgets\Pjax;
 
+if(!isset($tab) || strcmp($_GET['tab'], 'tabposts')!=0) $tab='tabposts';
+//Yii::$app->request->queryParams['tab']= $tab;
+$_GET['tab']= $tab;
 if(empty($posts)){
     echo '<h1>No se ha encontrado ningún post</h1>';
     return 0;
@@ -38,7 +41,6 @@ if(empty($posts)){
         </div>
         <?php endif;?>
     </div>
-    <?php //Pjax::begin();?>
 	<?php foreach ($posts as $post): ?>
 	<div class="tt-item">
 		<div class="tt-col-avatar">
@@ -95,4 +97,3 @@ if(empty($posts)){
 <div style="margin-top: 2%">
 	<?= LinkPager::widget(['pagination' => $pagination]) ?>
 </div>
-<?php //Pjax::end(); ?>

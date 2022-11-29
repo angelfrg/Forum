@@ -8,7 +8,9 @@ use yii\bootstrap5\LinkPager;
 use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
-
+if(!isset($tab) || strcmp($_GET['tab'], 'tabcategorias')!=0) $tab='tabcategorias';
+//Yii::$app->request->queryParams['tab']= $tab;
+$_GET['tab']= $tab;
 ?>
 <div class="site-index">
 <div class="tt-categories-title">

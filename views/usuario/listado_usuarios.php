@@ -5,6 +5,14 @@ use yii\helpers\Html;
 use yii\bootstrap5\LinkPager;
 use yii\helpers\Url;
 
+if(isset($pag) && strcmp($pag, 'seguidores')==0)
+    if(!isset($tab) || strcmp($_GET['tab'], 'tabseguidores')!=0) $tab='tabseguidores';
+
+if(isset($pag) && strcmp($pag, 'siguiendo')==0)
+	if(!isset($tab) || strcmp($_GET['tab'], 'tabsiguiendo')!=0) $tab='tabsiguiendo';
+
+$_GET['tab']= $tab;
+
 if(empty($usuarios)){
 	echo '<div class="tt-followers-list"><h1>No se ha encontrado ningún usuario</h1></div>';
 	return 0;
