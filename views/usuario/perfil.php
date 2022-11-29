@@ -32,6 +32,11 @@ use yii\widgets\Pjax;
         </div>
         <ul class="tt-list-badge">
             <li><span class="tt-color14 tt-badge">Puntos : <?= Html::encode("{$usuario->puntos}")?></span></li>
+            <?php
+                $sqlTipo=$usuario->getTipo();
+                $tipo=$sqlTipo->one();
+            ?>
+            <li><span class="tt-color10 tt-badge"><?= Html::encode("{$tipo->nombre_tipo}") ?></span></li>
         </ul>
     </div>
     <div class="tt-col-btn" >

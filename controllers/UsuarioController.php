@@ -16,6 +16,7 @@ class UsuarioController extends Controller
     public function actionPerfil($id=null)
     {
 		$usuario=Usuario::findOne($id);
+		$usuario->password='';
 
 		$categorias=Categoria::find()->orderBy('nombre_categoria')->all();
 		$lista=ArrayHelper::map($categorias,'id_categoria', 'nombre_categoria');

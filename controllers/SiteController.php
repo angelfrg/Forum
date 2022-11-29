@@ -150,7 +150,7 @@ class SiteController extends Controller
 			$usuario->password= hash("sha1", $model->password);
 			$usuario->puntos=0;
 			$usuario->id_carrera=null;
-			$usuario->id_tipo=1;
+			$usuario->id_tipo=3;		//Tipo estudiante
 			$usuario->token=null;
 			$usuario->url_foto=null;
 			$usuario->ult_conexion= date("Y-m-d H:i:s");
