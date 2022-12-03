@@ -78,7 +78,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => 'fa
                 </div>
                 <!-- /desktop menu -->
                 <!-- tt-search -->
-                <div class="tt-search">
+                <?php
+                /*<div class="tt-search">
                     <!-- toggle -->
                     <button class="tt-search-toggle" data-toggle="modal" data-target="#modalAdvancedSearch">
                         <svg class="tt-icon">
@@ -104,7 +105,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => 'fa
                             <button type="button" class="tt-view-all" data-toggle="modal" data-target="#modalAdvancedSearch">Búsqueda Avanzada</button>
                         </div>
                     </form>
-                </div>
+                </div>*/
+                ?>
                 <!-- /tt-search -->
             </div>
             <div class="col-auto ml-auto">

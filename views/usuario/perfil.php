@@ -190,11 +190,11 @@ echo Tabs::widget([
 
 		[
 			'label' => 'Posts',
-			'content' => $this->render("@app/views/post/listado_posts", [
+			'content' => '<div style="margin-top: 2%">'.$this->render("@app/views/post/listado_posts", [
 				"pagination" => $pagination,
 				"posts"=>$posts,
                 //'tab'=>'tabposts',
-			]),
+			]).'</div>',
 			'active' => strcmp($activo, 'tabposts')==0,
 		],
 		[

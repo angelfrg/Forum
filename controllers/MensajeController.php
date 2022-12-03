@@ -19,7 +19,7 @@ class MensajeController extends \yii\web\Controller
 		return $this->render('chats_inicio');
     }
 
-	public function actionMandarMensaje($id=null){
+	/*public function actionMandarMensaje($id=null){
 
 		//Usuarios con los que el usuario en sesión tiene mensajes
 		$usuarios=Usuario::find()
@@ -33,7 +33,7 @@ class MensajeController extends \yii\web\Controller
 
 
 		return $this->render('chats_inicio', ['id'=>$id, 'usuarios'=>$usuarios, 'mensajes'=>$mensajes]);
-	}
+	}*/
 
 	public function actionFetchuserchathistory($id=null){
 

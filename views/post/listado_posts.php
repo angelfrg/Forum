@@ -9,11 +9,22 @@ use yii\widgets\Pjax;
 if(!isset($tab) || strcmp($_GET['tab'], 'tabposts')!=0) $tab='tabposts';
 //Yii::$app->request->queryParams['tab']= $tab;
 $_GET['tab']= $tab;
+
+?>
+<div class="tt-categories-title">
+    <div class="tt-title">Posts</div>
+
+	<?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+
+</div>
+
+<?php
 if(empty($posts)){
-    echo '<h1>No se ha encontrado ningún post</h1>';
-    return 0;
+	echo '<h1>No se ha encontrado ningún post</h1>';
+	return 0;
 }
 ?>
+
 <div class="tt-topic-list">
 	<div class="tt-list-header">
 		<div class="tt-col-topic">Tema</div>
