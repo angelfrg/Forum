@@ -6,18 +6,18 @@ use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\PostsSearch */
+/* @var $searchModel app\models\CategoriasSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Posts';
+$this->title = 'Categorias';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="post-index">
+<div class="categoria-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Post', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Categoria', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -29,20 +29,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id_post',
-            'id_post_raiz',
-            'id_usuario',
             'id_categoria',
-            'titulo_post',
-            //'cuerpo_post',
-            //'tipo_post',
-            //'tags_post',
-            //'vistas_post',
-            //'fecha_post',
+            'id_facultad',
+            'nombre_categoria',
+            'abreviatura',
+            'color_categoria',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id_post' => $model->id_post]);
+                    return Url::toRoute([$action, 'id_categoria' => $model->id_categoria]);
                  }
             ],
         ],

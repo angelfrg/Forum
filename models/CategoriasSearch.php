@@ -4,12 +4,12 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Post;
+use app\models\Categoria;
 
 /**
- * PostsSearch represents the model behind the search form of `app\models\Post`.
+ * CategoriasSearch represents the model behind the search form of `app\models\Categoria`.
  */
-class PostsSearch extends Post
+class CategoriasSearch extends Categoria
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class PostsSearch extends Post
     public function rules()
     {
         return [
-            [['id_post', 'id_post_raiz', 'id_usuario', 'id_categoria', 'vistas_post'], 'integer'],
-            [['titulo_post', 'cuerpo_post', 'tipo_post', 'tags_post', 'fecha_post'], 'safe'],
+            [['id_categoria', 'id_facultad'], 'integer'],
+            [['nombre_categoria', 'abreviatura', 'color_categoria'], 'safe'],
         ];
     }
 
@@ -40,12 +40,12 @@ class PostsSearch extends Post
      */
     public function search($params)
     {
-        $query = Post::find()->where(['id_post_raiz'=>null]);
+        $query = Categoria::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
 			/*'pagination'=>[
-				'defaultPageSize' => 10,
+				'defaultPageSize' => 6,
 				'totalCount' => $query->count(),
 			],*/
         ]);
@@ -58,9 +58,11 @@ class PostsSearch extends Post
             return $dataProvider;
         }
 
-        $query->andFilterWhere(['like', 'titulo_post', $this->titulo_post]);
+        $query->andFilterWhere(['like', 'nombre_categoria', $this->nombre_categoria])
+            ->andFilterWhere(['like', 'abreviatura', $this->abreviatura])
+            ->andFilterWhere(['like', 'color_categoria', $this->color_categoria]);
 
-		$query->orderBy(['fecha_post'=>SORT_DESC]);
+		$query->orderBy(['id_categoria'=>SORT_ASC]);
 
         return $dataProvider;
     }

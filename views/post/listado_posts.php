@@ -7,16 +7,18 @@ use app\models\Accion;
 use yii\widgets\Pjax;
 
 if(!isset($tab) || strcmp($_GET['tab'], 'tabposts')!=0) $tab='tabposts';
-//Yii::$app->request->queryParams['tab']= $tab;
+
 $_GET['tab']= $tab;
 
 ?>
+<?php if(!isset($isTab)): ?>
 <div class="tt-categories-title">
     <div class="tt-title">Posts</div>
 
 	<?php  echo $this->render('_search', ['model' => $searchModel]); ?>
 
 </div>
+<?php endif; ?>
 
 <?php
 if(empty($posts)){

@@ -190,11 +190,11 @@ echo Tabs::widget([
 
 		[
 			'label' => 'Posts',
-			'content' => '<div style="margin-top: 2%">'.$this->render("@app/views/post/listado_posts", [
+			'content' => $this->render("@app/views/post/listado_posts", [
 				"pagination" => $pagination,
 				"posts"=>$posts,
-                //'tab'=>'tabposts',
-			]).'</div>',
+                "isTab"=>true
+			]),
 			'active' => strcmp($activo, 'tabposts')==0,
 		],
 		[
@@ -228,8 +228,9 @@ echo Tabs::widget([
 		[
 			'label' => 'Categorías',
 			'content' => '<div style="margin-top: 2%">'.$this->render('@app/views/categoria/listado_categorias', [
-                'categorias'=>$categorias,
-                'pagination' => $paginationCategorias,
+                "categorias"=>$categorias,
+                "pagination" => $paginationCategorias,
+                "isTab"=>true
                 ]).'</div>',
 			'active' => strcmp($activo, 'tabcategorias')==0,
 		],

@@ -9,30 +9,17 @@ use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
 if(!isset($tab) || strcmp($_GET['tab'], 'tabcategorias')!=0) $tab='tabcategorias';
-//Yii::$app->request->queryParams['tab']= $tab;
 $_GET['tab']= $tab;
 ?>
 <div class="site-index">
+
+<?php if(!isset($isTab)): ?>
 <div class="tt-categories-title">
     <div class="tt-title">Categorias</div>
-    <div class="tt-search">
-        <form class="search-wrapper">
-            <div class="search-form">
-                <input type="text" class="tt-search__input" placeholder="Buscar categorias">
-                <button class="tt-search__btn" type="submit">
-                    <svg class="tt-icon">
-                        <use xlink:href="#icon-search"></use>
-                    </svg>
-                </button>
-                <button class="tt-search__close">
-                    <svg class="tt-icon">
-                        <use xlink:href="#icon-cancel"></use>
-                    </svg>
-                </button>
-            </div>
-        </form>
-    </div>
+	<?php  echo $this->render('_search', ['model' => $searchModel]); ?>
 </div>
+<?php endif; ?>
+
 	<?php //Pjax::begin();?>
 <div class="tt-categories-list">
     <div class="row">

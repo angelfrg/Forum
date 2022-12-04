@@ -1,6 +1,7 @@
 <?php
 namespace app\controllers;
 
+use app\models\CategoriasSearch;
 use app\models\SuscripcionCategoria;
 use Yii;
 use yii\web\Controller;
@@ -17,21 +18,22 @@ class CategoriaController extends Controller
 	 */
 	public function actionIndex()
 	{
-		//Obtener todas las categorias de la base de datos y mandarlas como parametro
-		$sql=Categoria::find();
+
+		$searchModel = new CategoriasSearch();
+		$dataProvider = $searchModel->search($this->request->queryParams);
 
 		$pagination = new Pagination([
 			'defaultPageSize' => 6,
-			'totalCount' => $sql->count(),
+			'totalCount' => $dataProvider->query->count(),
 		]);
 
-		$categorias = $sql->orderBy('id_categoria')
-			->offset($pagination->offset)
-			->limit($pagination->limit)
-			->all();
+		//Obtener todas las categorias de la base de datos y mandarlas como parametro
+		$categorias=$dataProvider->query->offset($pagination->offset)
+			->limit($pagination->limit)->all();
 
 		//Se renderiza la web
 		return $this->render('listado_categorias', [
+			'searchModel'=>$searchModel,
 			'categorias'=>$categorias,
 			'pagination' => $pagination,
 		]);
