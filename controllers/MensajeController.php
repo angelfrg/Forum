@@ -2,6 +2,7 @@
 namespace app\controllers;
 
 use app\models\Mensaje;
+use app\models\UsuariosSearch;
 use Yii;
 use app\models\Usuario;
 
@@ -9,6 +10,9 @@ class MensajeController extends \yii\web\Controller
 {
     public function actionListadochats($id=null)
     {
+		$searchModel = new UsuariosSearch();
+		$dataProvider = $searchModel->search($this->request->queryParams);
+		$searchUsuarios=$dataProvider->query->all();
 		//Usuarios con los que el usuario en sesión tiene mensajes
 		/*$usuarios=Usuario::find()
 			->innerJoin('mensaje', 'mensaje.id_receptor=usuario.id_usuario')
@@ -16,7 +20,10 @@ class MensajeController extends \yii\web\Controller
 			->orderBy(['mensaje.fecha_mensaje'=>SORT_DESC])
 			->all();*/
 
-		return $this->render('chats_inicio');
+		return $this->render('chats_inicio',[
+			'searchModel' => $searchModel,
+			'searchUsuarios' => $searchUsuarios,
+		]);
     }
 
 	/*public function actionMandarMensaje($id=null){
