@@ -47,11 +47,11 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return [
 			['nombre_usuario','required', 'message'=>'Debes indicar tu nombre'],
 			['password','required', 'message'=>'Debes indicar tu contraseña'],
-            [['puntos', 'id_carrera', 'id_tipo', 'token'], 'integer'],
+            [['puntos', 'id_carrera', 'id_tipo'], 'integer'],
             [['ult_conexion'], 'safe'],
 			[['email_usuario'], 'unique'],
             [['nombre_usuario'], 'string', 'max' => 20],
-            [['apellidos_usuario', 'email_usuario', 'password', 'url_foto'], 'string', 'max' => 40],
+            [['apellidos_usuario', 'email_usuario', 'password'], 'string', 'max' => 40],
             [['id_carrera'], 'exist', 'skipOnError' => true, 'targetClass' => Categoria::className(), 'targetAttribute' => ['id_carrera' => 'id_categoria']],
             [['id_tipo'], 'exist', 'skipOnError' => true, 'targetClass' => TipoUsuario::className(), 'targetAttribute' => ['id_tipo' => 'id_tipo']],
         ];
@@ -71,8 +71,8 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'puntos' => 'Puntos',
             'id_carrera' => 'Id Carrera',
             'id_tipo' => 'Id Tipo',
-            'token' => 'Token',
-            'url_foto' => 'Url Foto',
+            //'token' => 'Token',
+            //'url_foto' => 'Url Foto',
             'ult_conexion' => 'Ult Conexion',
         ];
     }

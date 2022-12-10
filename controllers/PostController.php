@@ -65,9 +65,15 @@ class PostController extends Controller
 		$model= new PostForm();
 
 		if(isset($orden)){
-			if(strcmp($orden, 'like')){
+			if(strcmp($orden, 'like')==0){
 
-				$respuestas=Post::find()->where(['id_post_raiz'=>$post->id_post])->all();
+				//SELECT * FROM post where id_post_raiz=18
+				//ORDER BY(SELECT COUNT(*) FROM `accion` WHERE accion.like=1 AND accion.id_post=post.id_post) DESC;
+				$respuestas=Post::find()
+					->where(['id_post_raiz'=>$post->id_post])
+					->orderBy(['likes'=>SORT_DESC])
+					->addSelect( '*, (SELECT COUNT(*) FROM `accion` WHERE accion.like=1 AND accion.id_post=post.id_post) as likes')
+					->all();
 
 			}elseif (strcmp($orden, 'recientes')){
 				$respuestas=Post::find()->where(['id_post_raiz'=>$post->id_post])->orderBy(['fecha_post'=>SORT_ASC])->all();
