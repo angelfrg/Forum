@@ -17,7 +17,7 @@ use yii\helpers\Url;
 		</div>
 		<div class="ml-right tt-col-right">
 			<div class="tt-col-item">
-				<h2 class="tt-value">Posts - <?= $totalPosts?></h2>
+				<h2 class="tt-value">Posts - <?= $categoria->getPosts()->where(['id_post_raiz'=>null])->count() ?></h2>
 			</div>
 			<div class="tt-col-item">
                 <?php

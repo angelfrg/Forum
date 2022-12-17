@@ -51,15 +51,10 @@ class CategoriaController extends Controller
 
 			$categoria=Categoria::findOne($id);
 			if(isset($categoria)){
-				$totalPosts=Post::find()
-					->where(['id_categoria'=>$categoria->id_categoria, 'id_post_raiz'=>null])
-					->count();
-
 
 				//Se renderiza la web
 				return $this->render('una_categoria', [
 					'categoria'=>$categoria,
-					'totalPosts'=>$totalPosts,
 				]);
 			}else{
 				$this->actionIndex();
