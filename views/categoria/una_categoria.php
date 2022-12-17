@@ -15,7 +15,7 @@ use yii\helpers\Url;
 				<li><a href="#"><span class="tt-badge" style="background-color: <?php echo $categoria->color_categoria;?>"><?= Html::encode("{$categoria->abreviatura}")?></span></a></li>
 			</ul>
 		</div>
-		<div class="ml-left tt-col-right">
+		<div class="ml-right tt-col-right">
 			<div class="tt-col-item">
 				<h2 class="tt-value">Posts - <?= $totalPosts?></h2>
 			</div>
@@ -39,30 +39,7 @@ use yii\helpers\Url;
                         </a>';
                 ?>
 			</div>
-			<div class="tt-col-item">
-				<div class="tt-search">
-					<button class="tt-search-toggle" data-toggle="modal" data-target="#modalAdvancedSearch">
-						<svg class="tt-icon">
-							<use xlink:href="#icon-search"></use>
-						</svg>
-					</button>
-					<form class="search-wrapper">
-						<div class="search-form">
-							<input type="text" class="tt-search__input" placeholder="Buscar en <?php echo $categoria->abreviatura ?>">
-							<button class="tt-search__btn" type="submit">
-								<svg class="tt-icon">
-									<use xlink:href="#icon-search"></use>
-								</svg>
-							</button>
-							<button class="tt-search__close">
-								<svg class="tt-icon">
-									<use xlink:href="#icon-cancel"></use>
-								</svg>
-							</button>
-						</div>
-					</form>
-				</div>
-			</div>
+
 		</div>
 	</div>
 	<div class="tt-innerwrapper">
@@ -110,5 +87,6 @@ use yii\helpers\Url;
     echo $this->render('@app/views/post/listado_posts', [
         'pagination' => $pagination,
         'posts'=>$posts,
+        'isTab'=>true,
     ]);
 ?>

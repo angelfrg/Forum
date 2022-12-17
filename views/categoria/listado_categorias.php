@@ -28,14 +28,14 @@ $_GET['tab']= $tab;
             <div class="tt-item">
                 <div class="tt-item-header">
                     <ul class="tt-list-badge">
-                        <li><a href="<?= Url::toRoute(['categoria/una', 'id'=>$categoria->id_categoria]);?>"><span class="tt-badge" style="background-color: <?php echo $categoria->color_categoria;?>"><?= Html::encode("{$categoria->abreviatura}")?></span></a></li>
+                        <li><a href="<?= Url::toRoute(['categoria/una', 'id'=>$categoria->id_categoria, 'isTab'=>true]);?>"><span class="tt-badge" style="background-color: <?php echo $categoria->color_categoria;?>"><?= Html::encode("{$categoria->abreviatura}")?></span></a></li>
                     </ul>
                     <?php
 					$totalPosts=Post::find()
 						->where(['id_categoria'=>$categoria->id_categoria, 'id_post_raiz'=>null])
 						->count();
                     ?>
-                    <h6 class="tt-title"><a href="<?= Url::toRoute(['categoria/una', 'id'=>$categoria->id_categoria]);?>"> Posts - <?= $totalPosts ?></a></h6>
+                    <h6 class="tt-title"><a href="<?= Url::toRoute(['categoria/una', 'id'=>$categoria->id_categoria, 'isTab'=>true]);?>"> Posts - <?= $totalPosts ?></a></h6>
                 </div>
                 <div class="tt-item-layout">
                     <div class="innerwrapper">

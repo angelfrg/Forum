@@ -122,6 +122,7 @@ class Post extends \yii\db\ActiveRecord
 
 		//Si no hay respuestas, poner fecha de post
 		$dias=date_diff(date_create(date("Y-m-d H:i:s")),date_create($this->fecha_post));
-		return $dias->d;
+		//print_r($dias);
+		return $dias->days;
 	}
 }
