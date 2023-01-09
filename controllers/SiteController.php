@@ -111,6 +111,9 @@ class SiteController extends Controller
 				$this->redirect(array('usuario/perfil', 'id'=>Yii::$app->user->identity->id));
 			}else if(strcmp(Yii::$app->request->post()['myselect'],'mensajes')==0){
 				$this->redirect(array('mensaje/listadochats'));
+			}else if(strcmp(Yii::$app->request->post()['myselect'],'admin')==0){
+				if(!Yii::$app->user->isGuest && Usuario::esRolAdmin(Yii::$app->user->id))
+					$this->redirect(array(''));
 			}
 		}else
 			$this->goHome();

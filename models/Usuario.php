@@ -215,4 +215,22 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 		$this->puntos+=$puntos;
 		$this->save();
 	}
+
+	/********************************************
+	 * Funciones para comprobar rol del usuario
+	 *******************************************/
+	public static function esRolAlumno($id){
+		$usuario=Usuario::findOne(['id_usuario'=>$id]);
+		return $usuario->id_tipo==3;
+	}
+
+	public static function esRolProfesor($id){
+		$usuario=Usuario::findOne(['id_usuario'=>$id]);
+		return $usuario->id_tipo==2;
+	}
+
+	public static function esRolAdmin($id){
+		$usuario=Usuario::findOne(['id_usuario'=>$id]);
+		return $usuario->id_tipo==1;
+	}
 }
