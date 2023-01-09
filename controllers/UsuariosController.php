@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Usuario;
 use app\models\UsuarioAdminSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -43,6 +44,9 @@ class UsuariosController extends Controller
      */
     public function actionIndex()
     {
+		if(Yii::$app->user->isGuest || !Usuario::esRolAdmin(Yii::$app->user->id))
+			return $this->goHome();
+
         $searchModel = new UsuarioAdminSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -60,6 +64,9 @@ class UsuariosController extends Controller
      */
     public function actionView($id_usuario)
     {
+		if(Yii::$app->user->isGuest || !Usuario::esRolAdmin(Yii::$app->user->id))
+			return $this->goHome();
+
         return $this->render('view', [
             'model' => $this->findModel($id_usuario),
         ]);
@@ -72,6 +79,9 @@ class UsuariosController extends Controller
      */
     public function actionCreate()
     {
+		if(Yii::$app->user->isGuest || !Usuario::esRolAdmin(Yii::$app->user->id))
+			return $this->goHome();
+
         $model = new Usuario();
 
         if ($this->request->isPost) {
@@ -96,11 +106,22 @@ class UsuariosController extends Controller
      */
     public function actionUpdate($id_usuario)
     {
+		if(Yii::$app->user->isGuest || !Usuario::esRolAdmin(Yii::$app->user->id))
+			return $this->goHome();
+
         $model = $this->findModel($id_usuario);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id_usuario' => $model->id_usuario]);
-        }
+		$contraAnterior=$model->password;
+		if ($this->request->isPost && $model->load($this->request->post())){
+			//Se comprueba si la contraseña introducida es distinta a la anterior
+			if(strcmp($contraAnterior, $this->request->post('Usuario')['password'])!=0)
+				$model->password=hash("sha1", $model->password);	//Se genera la nueva contraseña cifrada
+
+			//Se guarda el modelo
+			if($model->save())
+				return $this->redirect(['view', 'id_usuario' => $model->id_usuario]);
+
+		}
 
         return $this->render('update', [
             'model' => $model,
@@ -116,6 +137,9 @@ class UsuariosController extends Controller
      */
     public function actionDelete($id_usuario)
     {
+		if(Yii::$app->user->isGuest || !Usuario::esRolAdmin(Yii::$app->user->id))
+			return $this->goHome();
+
         $this->findModel($id_usuario)->delete();
 
         return $this->redirect(['index']);

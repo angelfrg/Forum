@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'apellidos_usuario',
             'email_usuario:email',
             'puntos',
-            //'id_tipo',
+            'id_tipo',
             'ult_conexion',
             [
                 'class' => ActionColumn::className(),
