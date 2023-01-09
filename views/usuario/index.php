@@ -27,13 +27,32 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'id_usuario',
             'nombre_usuario',
             'apellidos_usuario',
             'email_usuario:email',
             'puntos',
-            'id_tipo',
+			[
+				'attribute'=>'id_carrera',
+				'content'=> function($model, $key, $index, $column){
+                    if(isset($model->id_carrera) && $model->id_carrera!=null)
+					    return $model->descripcionTitulaciones($model->id_carrera);
+                    else
+                        return 'Sin carrera';
+				},
+				'contentOptions'=>['class'=>'text-center'],
+				'filter'=>\app\models\Usuario::listaTitulaciones(),
+				'label'=>'Titulación'
+			],
+			[
+				'attribute'=>'id_tipo',
+				'content'=> function($model, $key, $index, $column){
+					return $model->descripcionTiposUsuario($model->id_tipo);
+				},
+				'contentOptions'=>['class'=>'text-center'],
+				'filter'=>\app\models\Usuario::listaTiposUsuario(),
+                'label'=>'Tipo'
+			],
             'ult_conexion',
             [
                 'class' => ActionColumn::className(),

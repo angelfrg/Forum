@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "usuario".
@@ -232,5 +233,39 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 	public static function esRolAdmin($id){
 		$usuario=Usuario::findOne(['id_usuario'=>$id]);
 		return $usuario->id_tipo==1;
+	}
+
+	//Tipos de usuarios
+	public static function listaTiposUsuario(){
+		$tipos=TipoUsuario::find()->orderBy('id_tipo')->all();
+		$lista=ArrayHelper::map($tipos,'id_tipo', 'nombre_tipo');
+		return $lista;
+	}
+
+	public static function getTiposUsuario($id){
+		$lista=self::listaTiposUsuario();
+		$res= (isset($lista[$id]) ? $lista[$id] : '<Tipo'.$id.'>');
+		return $res;
+	}
+
+	public function descripcionTiposUsuario($id){
+		return static::getTiposUsuario($id);
+	}
+
+	//Titulaciones/Categorias
+	public static function listaTitulaciones(){
+		$tipos=Categoria::find()->orderBy('id_categoria')->all();
+		$lista=ArrayHelper::map($tipos,'id_categoria', 'abreviatura');
+		return $lista;
+	}
+
+	public static function getTitulaciones($id){
+		$lista=self::listaTitulaciones();
+		$res= (isset($lista[$id]) ? $lista[$id] : '<Categoria'.$id.'>');
+		return $res;
+	}
+
+	public function descripcionTitulaciones($id){
+		return static::getTitulaciones($id);
 	}
 }
