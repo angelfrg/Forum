@@ -17,11 +17,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Usuario'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Crear Usuario'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -33,11 +32,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'nombre_usuario',
             'apellidos_usuario',
             'email_usuario:email',
-            'password',
-            //'puntos',
-            //'id_carrera',
+            'puntos',
             //'id_tipo',
-            //'ult_conexion',
+            'ult_conexion',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, $model, $key, $index, $column) {

@@ -63,10 +63,10 @@ class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function attributeLabels()
     {
         return [
-            'id_usuario' => 'Id Usuario',
-            'nombre_usuario' => 'Nombre Usuario',
-            'apellidos_usuario' => 'Apellidos Usuario',
-            'email_usuario' => 'Email Usuario',
+            'id_usuario' => 'Id',
+            'nombre_usuario' => 'Nombre',
+            'apellidos_usuario' => 'Apellidos',
+            'email_usuario' => 'Email',
             'password' => 'Password',
             'puntos' => 'Puntos',
             'id_carrera' => 'Id Carrera',
