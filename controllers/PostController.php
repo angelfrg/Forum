@@ -34,22 +34,6 @@ class PostController extends Controller
 		$posts=$dataProvider->query->offset($pagination->offset)
 			->limit($pagination->limit)->all();
 
-
-		/*
-		//Obtener todas las categorias de la base de datos y mandarlas como parametro
-		$sql=Post::find()->where(['id_post_raiz'=>null]);
-
-		$pagination = new Pagination([
-			'defaultPageSize' => 10,
-			'totalCount' => $sql->count(),
-		]);
-
-		$posts = $sql->orderBy(['fecha_post'=>SORT_DESC])
-			->offset($pagination->offset)
-			->limit($pagination->limit)
-			->all();
-		*/
-
 		//Se renderiza la web
 		return $this->render('listado_posts', [
 			'searchModel'=>$searchModel,

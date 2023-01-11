@@ -22,13 +22,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'puntos')->textInput() ?>
 
-    <?= $form->field($model, 'id_carrera')->textInput() ?>
+	<?= $form->field($model, 'id_carrera')->dropDownList($model::listaTitulaciones())->label('Titulación') ?>
 
-    <?= $form->field($model, 'id_tipo')->textInput() ?>
+	<?= $form->field($model, 'id_tipo')->dropDownList($model::listaTiposUsuario())->label('Tipo (Rol)') ?>
 
     <?= $form->field($model, 'ult_conexion')->textInput() ?>
 
-    <div class="form-group">
+    <div class="form-group mt-2">
         <?= Html::submitButton(Yii::t('app', 'Guardar'), ['class' => 'btn btn-success']) ?>
     </div>
 

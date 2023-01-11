@@ -35,8 +35,17 @@ $this->params['breadcrumbs'][] = $this->title;
             'email_usuario:email',
             'password',
             'puntos',
-            'id_carrera',
-            'id_tipo',
+			[
+				'attribute'=>'id_carrera',
+				'value'=>
+					(isset($model->id_carrera) && $model->id_carrera!=null) ? $model->descripcionTitulaciones($model->id_carrera) :'Sin carrera',
+                'label'=>'Titulación'
+			],
+			[
+				'attribute'=>'id_tipo',
+				'value'=> $model->descripcionTiposUsuario($model->id_tipo),
+                'label'=>'Tipo (Rol)'
+			],
             'ult_conexion',
         ],
     ]) ?>
