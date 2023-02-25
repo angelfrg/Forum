@@ -60,11 +60,11 @@ class PostController extends Controller
 					->all();
 
 			}elseif (strcmp($orden, 'recientes')){
-				$respuestas=Post::find()->where(['id_post_raiz'=>$post->id_post])->orderBy(['fecha_post'=>SORT_ASC])->all();
+				$respuestas=Post::find()->where(['id_post_raiz'=>$post->id_post])->orderBy(['fecha_post'=>SORT_DESC])->all();
 			}else
-				$respuestas=Post::find()->where(['id_post_raiz'=>$post->id_post])->orderBy(['fecha_post'=>SORT_ASC])->all();
+				$respuestas=Post::find()->where(['id_post_raiz'=>$post->id_post])->orderBy(['fecha_post'=>SORT_DESC])->all();
 		}else
-			$respuestas=Post::find()->where(['id_post_raiz'=>$post->id_post])->orderBy(['fecha_post'=>SORT_ASC])->all();
+			$respuestas=Post::find()->where(['id_post_raiz'=>$post->id_post])->orderBy(['fecha_post'=>SORT_DESC])->all();
 
 		if(!Yii::$app->user->isGuest){
 			$post->incrementarVisitas();
